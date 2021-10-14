@@ -14,6 +14,7 @@
 #include "Memory.h"
 #include "Debug.h"
 #include "Compiler.h"
+#include "Value.h"
 
 //Enable verbose tracing of bytecode execution
 #define DEBUG_TRACE_EXECUTION
@@ -85,6 +86,20 @@ protected:
      * @return The back-most value on the stack.
      */
     inline Value popValue();
+
+    /**
+     * @brief Prints an error, resets the stack and halts runtime execution.
+     * @param format The error string to print.
+     * @param ...
+     */
+    void runtimeError(const std::string& format, Batch& batch);
+
+    /**
+     * @brief Returns true if the value can be evaluated to false.
+     * @param value The value to be tested for falsiness.
+     * @return True if the value evaluates to false, otherwise false.
+     */
+    bool isFalsey(const Value& value);
 };
 
 

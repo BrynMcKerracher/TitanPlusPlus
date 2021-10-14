@@ -30,3 +30,13 @@
 *.exe
 *.out
 *.app
+
+# Doxygen files
+doxygen/*
+
+# CMake files
+cmake-build-debug/*
+cmake-build-debug-coverage/*
+
+# CLion files
+.idea/*

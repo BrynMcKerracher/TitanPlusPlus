@@ -27,4 +27,4 @@ add_executable(TitanPlusPlus
     Token.h
     Parser.cpp
     Parser.h
-        )
+        Oject.cpp Oject.h)

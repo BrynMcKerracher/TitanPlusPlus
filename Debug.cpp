@@ -27,12 +27,12 @@ int Debug::disassembleInstruction(const Batch &batch, size_t instructionIndex) {
     switch (instructionOpCode) {
         case Op::Constant32: {
             size_t constantIndex = Memory::toValue<size_t>(batch.opcodes[instructionIndex + 1], batch.opcodes[instructionIndex + 2]);
-            std::cout << constantIndex << " " << batch.constantPool[constantIndex];
+            std::cout << constantIndex << " " << batch.constantPool[constantIndex].toString();
             break;
         }
         case Op::Constant: {
             size_t constantIndex = batch.opcodes[instructionIndex + 1];
-            std::cout << constantIndex << " " << batch.constantPool[constantIndex];
+            std::cout << constantIndex << " " << batch.constantPool[constantIndex].toString();
             break;
         }
         default: break;

@@ -6,7 +6,6 @@
 #include "Batch.h"
 
 void Batch::addOp(Op::Code op, int lineNum) {
-    std::cout << "Op " << Op::instructionName(op) << "\n";
     opcodes.push_back(op);
     lines.push_back(lineNum);
 }

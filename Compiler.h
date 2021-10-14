@@ -139,6 +139,11 @@ protected:
     void binary();
 
     /**
+     * @brief Parses a literal value.
+     */
+    void literal();
+
+    /**
      *
      * @param precedence
      */

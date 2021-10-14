@@ -12,31 +12,31 @@ Compiler::Compiler() {
     parseRules[Token::Type::SEMICOLON]     = {nullptr,     nullptr,   Precedence::NONE};
     parseRules[Token::Type::SLASH]         = {nullptr,     [this] { binary(); },    Precedence::FACTOR};
     parseRules[Token::Type::STAR]          = {nullptr,     [this] { binary(); },    Precedence::FACTOR};
-    parseRules[Token::Type::BANG]          = {nullptr,     nullptr,   Precedence::NONE};
-    parseRules[Token::Type::BANG_EQUAL]    = {nullptr,     nullptr,   Precedence::NONE};
+    parseRules[Token::Type::BANG]          = {[this] { unary(); },     nullptr,   Precedence::NONE};
+    parseRules[Token::Type::BANG_EQUAL]    = {nullptr,     [this] { binary(); },   Precedence::EQUALITY};
     parseRules[Token::Type::EQUAL]         = {nullptr,     nullptr,   Precedence::NONE};
-    parseRules[Token::Type::EQUAL_EQUAL]   = {nullptr,     nullptr,   Precedence::NONE};
-    parseRules[Token::Type::GREATER]       = {nullptr,     nullptr,   Precedence::NONE};
-    parseRules[Token::Type::GREATER_EQUAL] = {nullptr,     nullptr,   Precedence::NONE};
-    parseRules[Token::Type::LESS]          = {nullptr,     nullptr,   Precedence::NONE};
-    parseRules[Token::Type::LESS_EQUAL]    = {nullptr,     nullptr,   Precedence::NONE};
+    parseRules[Token::Type::EQUAL_EQUAL]   = {nullptr,     [this] { binary(); },   Precedence::EQUALITY};
+    parseRules[Token::Type::GREATER]       = {nullptr,     [this] { binary(); },   Precedence::COMPARISON};
+    parseRules[Token::Type::GREATER_EQUAL] = {nullptr,     [this] { binary(); },   Precedence::COMPARISON};
+    parseRules[Token::Type::LESS]          = {nullptr,     [this] { binary(); },   Precedence::COMPARISON};
+    parseRules[Token::Type::LESS_EQUAL]    = {nullptr,     [this] { binary(); },   Precedence::COMPARISON};
     parseRules[Token::Type::IDENTIFIER]    = {nullptr,     nullptr,   Precedence::NONE};
     parseRules[Token::Type::STRING]        = {nullptr,     nullptr,   Precedence::NONE};
     parseRules[Token::Type::NUMBER]        = {[this] { number(); },      nullptr,   Precedence::NONE};
     parseRules[Token::Type::AND]           = {nullptr,     nullptr,   Precedence::NONE};
     parseRules[Token::Type::CLASS]         = {nullptr,     nullptr,   Precedence::NONE};
     parseRules[Token::Type::ELSE]          = {nullptr,     nullptr,   Precedence::NONE};
-    parseRules[Token::Type::FALSE]         = {nullptr,     nullptr,   Precedence::NONE};
+    parseRules[Token::Type::FALSE]         = {[this] { literal(); },     nullptr,   Precedence::NONE};
     parseRules[Token::Type::FOR]           = {nullptr,     nullptr,   Precedence::NONE};
     parseRules[Token::Type::FUN]           = {nullptr,     nullptr,   Precedence::NONE};
     parseRules[Token::Type::IF]            = {nullptr,     nullptr,   Precedence::NONE};
-    parseRules[Token::Type::NIL]           = {nullptr,     nullptr,   Precedence::NONE};
+    parseRules[Token::Type::NIL]           = {[this] { literal(); },     nullptr,   Precedence::NONE};
     parseRules[Token::Type::OR]            = {nullptr,     nullptr,   Precedence::NONE};
     parseRules[Token::Type::PRINT]         = {nullptr,     nullptr,   Precedence::NONE};
     parseRules[Token::Type::RETURN]        = {nullptr,     nullptr,   Precedence::NONE};
     parseRules[Token::Type::SUPER]         = {nullptr,     nullptr,   Precedence::NONE};
     parseRules[Token::Type::THIS]          = {nullptr,     nullptr,   Precedence::NONE};
-    parseRules[Token::Type::TRUE]          = {nullptr,     nullptr,   Precedence::NONE};
+    parseRules[Token::Type::TRUE]          = {[this] { literal(); },     nullptr,   Precedence::NONE};
     parseRules[Token::Type::VAR]           = {nullptr,     nullptr,   Precedence::NONE};
     parseRules[Token::Type::WHILE]         = {nullptr,     nullptr,   Precedence::NONE};
     parseRules[Token::Type::ERROR]         = {nullptr,     nullptr,   Precedence::NONE};
@@ -114,7 +114,7 @@ void Compiler::expression() {
 
 void Compiler::number() {
     double value = strtod(&titanSourceCode[parser.previous.start], nullptr);
-    emitConstant(value);
+    emitConstant(Value::fromNumber(value));
 }
 
 void Compiler::grouping() {
@@ -128,6 +128,7 @@ void Compiler::unary() {
     parsePrecedence(Precedence::UNARY);
 
     switch (operatorType) {
+        case Token::Type::BANG:  emitOp(Op::Code::Not);    break;
         case Token::Type::MINUS: emitOp(Op::Code::Negate); break;
         default: return;
     }
@@ -139,11 +140,26 @@ void Compiler::binary() {
     parsePrecedence((Precedence)(rule->precedence + 1));
 
     switch (operatorType) {
-        case Token::PLUS:          emitOp(Op::Code::Add);      break;
-        case Token::MINUS:         emitOp(Op::Code::Subtract); break;
-        case Token::STAR:          emitOp(Op::Code::Multiply); break;
-        case Token::SLASH:         emitOp(Op::Code::Divide);   break;
+        case Token::BANG_EQUAL:    emitOp(Op::Code::NotEqual);     break;
+        case Token::EQUAL_EQUAL:   emitOp(Op::Code::Equal);        break;
+        case Token::GREATER:       emitOp(Op::Code::Greater);      break;
+        case Token::GREATER_EQUAL: emitOp(Op::Code::GreaterEqual); break;
+        case Token::LESS:          emitOp(Op::Code::Less);         break;
+        case Token::LESS_EQUAL:    emitOp(Op::Code::LessEqual);    break;
+        case Token::PLUS:          emitOp(Op::Code::Add);          break;
+        case Token::MINUS:         emitOp(Op::Code::Subtract);     break;
+        case Token::STAR:          emitOp(Op::Code::Multiply);     break;
+        case Token::SLASH:         emitOp(Op::Code::Divide);       break;
         default: return; // Unreachable.
+    }
+}
+
+void Compiler::literal() {
+    switch (parser.previous.type) {
+        case Token::FALSE: emitOp(Op::Code::False); break;
+        case Token::NIL:   emitOp(Op::Code::Null);  break;
+        case Token::TRUE:  emitOp(Op::Code::True);  break;
+        default: break;
     }
 }
 
