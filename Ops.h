@@ -19,24 +19,30 @@
 struct Op {
     ///List of all OpCodes, each is two byte.
     enum Code : uint16_t {
-        Add,          ///< Adds and pops the two values at the back of the stack, then pushes the result.
-        Constant32,   ///< Load a 32-bit constant from the stream as an index for the constant pool.
-        Constant,     ///< Load a constant using the next Op::Code in stream as an index for the constant pool.
-        Divide,       ///< Divides and pops the two values at the back of the stack, then pushes the result.
-        Equal,        ///< Tests if the top two values on the stack are equal.
-        False,        ///< Represents a boolean 'false' value.
-        Greater,      ///< Tests the top two values of the stack and returns true if the second-most is greater.
-        GreaterEqual, ///< Tests the top two values of the stack and returns false if the second-most is lesser.
-        Less,         ///< Tests the top two values of the stack and returns true if the second-most is lesser.
-        LessEqual,    ///< Tests the top two values of the stack and returns false if the second-most is greater.
-        Multiply,     ///< Multiplies and pops the two values at the back of the stack, then pushes the result.
-        Negate,       ///< Negate the result from the top of the VM's stack.
-        Not,          ///< Logically negate the top of the VM's stack.
-        NotEqual,     ///< Tests if the topmost two values on the stack are inequal.
-        Null,         ///< Represents a null value.
-        Return,       ///< Exit from VM processing cycle.
-        Subtract,     ///< Subtracts and pops the two values at the back of the stack, then pushes the result.
-        True,         ///< Represents a boolean 'true' value.
+        Add,            ///< Adds and pops the two values at the back of the stack, then pushes the result.
+        Constant32,     ///< Load a 32-bit constant from the stream as an index for the constant pool.
+        Constant,       ///< Load a constant using the next Op::Code in stream as an index for the constant pool.
+        DefineGlobal32, ///< Define a global variable with a 32-bit index in the VM's globals array.
+        DefineGlobal,   ///< Define a global variable in the VM's globals array.
+        Divide,         ///< Divides and pops the two values at the back of the stack, then pushes the result.
+        Equal,          ///< Tests if the top two values on the stack are equal.
+        False,          ///< Represents a boolean 'false' value.
+        GetGlobal32,    ///< Loads a 32-bit-addressed global onto the stack.
+        GetGlobal,      ///< Loads a global onto the stack.
+        Greater,        ///< Tests the top two values of the stack and returns true if the second-most is greater.
+        GreaterEqual,   ///< Tests the top two values of the stack and returns false if the second-most is lesser.
+        Less,           ///< Tests the top two values of the stack and returns true if the second-most is lesser.
+        LessEqual,      ///< Tests the top two values of the stack and returns false if the second-most is greater.
+        Multiply,       ///< Multiplies and pops the two values at the back of the stack, then pushes the result.
+        Negate,         ///< Negate the result from the top of the VM's stack.
+        Not,            ///< Logically negate the top of the VM's stack.
+        NotEqual,       ///< Tests if the topmost two values on the stack are inequal.
+        Null,           ///< Represents a null value.
+        Pop,            ///< Pops the top value from the stack.
+        Print,          ///< Prints and pops a value from the stack.
+        Return,         ///< Exit from VM processing cycle.
+        Subtract,       ///< Subtracts and pops the two values at the back of the stack, then pushes the result.
+        True,           ///< Represents a boolean 'true' value.
     };
 
     /**

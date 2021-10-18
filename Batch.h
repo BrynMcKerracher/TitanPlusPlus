@@ -57,7 +57,7 @@ public:
      * @param value The constant to be added to the pool.
      * @return The index of the constant in the pool.
      */
-    size_t addConstant(Value value);
+    size_t addConstant(const Value& value);
 };
 
 #endif //TITANPLUSPLUS_BATCH_H

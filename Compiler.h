@@ -29,21 +29,6 @@
  */
 class Compiler {
 public:
-    ///Ordering of precedence values for parsing.
-    enum Precedence {
-        NONE,
-        ASSIGNMENT,  // =
-        OR,          // or
-        AND,         // and
-        EQUALITY,    // == !=
-        COMPARISON,  // < > <= >=
-        TERM,        // + -
-        FACTOR,      // * /
-        UNARY,       // ! -
-        CALL,        // . ()
-        PRIMARY
-    };
-
     /**
      * Initialises the parse rules.
      */
@@ -60,6 +45,21 @@ public:
      */
     bool compile(const std::string& titanCode, Batch& batch);
 protected:
+    ///Ordering of precedence values for parsing.
+    enum Precedence {
+        NONE,
+        ASSIGNMENT,  // =
+        OR,          // or
+        AND,         // and
+        EQUALITY,    // == !=
+        COMPARISON,  // < > <= >=
+        TERM,        // + -
+        FACTOR,      // * /
+        UNARY,       // ! -
+        CALL,        // . ()
+        PRIMARY
+    };
+
     typedef std::function<void()> ParseFunction; ///< Alias for use in Pratt parsing.
 
     struct ParseRule {
@@ -144,16 +144,85 @@ protected:
     void literal();
 
     /**
-     *
-     * @param precedence
+     * @brief Parses a string.
+     */
+     void string();
+
+     /**
+      * @brief Parses a declaration.
+      */
+     void declaration();
+
+     /**
+      * @brief Parses a statement.
+      */
+     void statement();
+
+     /**
+      * @brief Parses an expression and pops the resulting value from the stack.
+      */
+     void expressionStatement();
+
+     /**
+      * @brief Parses a variable declaration.
+      */
+     void variableDeclaration();
+
+     /**
+      * @brief Parses a variable.
+      */
+     void variable();
+
+     /**
+      * @brief Creates a sequence of instructions for loading a named variable.
+      * @param token The token to parse the variable from.
+      */
+     void namedVariable(const Token& token);
+
+     /**
+      * @brief Recovers the parser from panic mode to prevent cascade errors.
+      */
+     void synchronise();
+
+    /**
+     * @brief Parses a token from source code at the given precedence.
+     * @param precedence Parses a token from source with the given precedence.
      */
     void parsePrecedence(Precedence precedence);
 
     /**
+     * @brief Parses a variable name from the source stream.
+     * @param errorMessage Message to be displayed if parsing fails.
+     * @return The index of the new variable's name in the constants array of the current batch.
+     */
+    size_t parseVariable(const std::string& errorMessage);
+
+    /**
+     * @brief Creates a string constant and returns its index for use in defining variables.
+     * @param token Token to lex the constant's name from.
+     * @return The index of the string.
+     */
+    size_t identifierConstant(const Token& token);
+
+    /**
+     * @brief Writes Op::Codes to the current batch to define a global variable, given the index to its name.
+     * @param global The index of the global variable's name in the batch's constant pool.
+     */
+    void defineVariable(size_t global);
+
+    /**
      * @brief Adds an Op sequence to the current batch to store a constant.
      * @param value The value to be added.
+     * @return The index of the constant in the current batch's constant table.
      */
-    void emitConstant(Value value);
+    size_t emitConstant(const Value& value);
+
+    /**
+     * @brief Consumes a token if it has the given type, otherwise returns false.
+     * @param type The type to check the next token for.
+     * @return True if the next token matches the given type, otherwise false.
+     */
+    bool matchType(Token::Type type);
 };
 
 #endif //TITANPLUSPLUS_COMPILER_H

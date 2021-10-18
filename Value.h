@@ -9,6 +9,8 @@
  */
 
 #include <string>
+#include <variant>
+#include "Object.h"
 
 /**
  * Value is essentially a tagged-union structure with utility functions.
@@ -26,16 +28,12 @@ struct Value {
         BOOL,   ///< Boolean value.
         NIL,    ///< Null value.
         NUMBER, ///< Numeric value (double precision).
+        STRING, ///< A sequence of characters.
         OBJECT, ///< Heap-allocated object.
     };
 
-    Value::Type type; ///< This Object's value type.
-
-    ///< Each value instance can only represent one type of value at once.
-    union {
-        bool boolean;
-        double number;
-    } as;
+    Value::Type type;                                     ///< This Object's value type.
+    std::variant<bool, double, std::string, Object> data; ///< Each value instance can only represent one type of value at once.
 
     /**
      * @brief Converts a C++ boolean value to a Titan Value object.
@@ -58,18 +56,28 @@ struct Value {
     static Value fromNumber(double value);
 
     /**
-     * @brief Converts a Titan value to a C++ boolean.
-     * @param value The Titan Value object to be converted to a C++ boolean.
-     * @return The C++ boolean representation of the provided Titan Value object;
+     * @brief Converts a C++ string to a Titan Value object.
+     * @param value The string that the Value object will represent.
+     * @return A Value object representing the given C++ string.
      */
-    static inline bool toBool(const Value& value);
+    static Value fromString(const std::string& value);
 
     /**
-     * @brief Converts a Titan value to a C++ double.
-     * @param value The Titan Value object to be converted to a C++ double.
-     * @return The C++ double representation of the provided Titan Value object;
+     * @brief Returns the data the provided object represents as the specified type.
+     * @tparam T The C++ type to convert the value into.
+     * @param value The value to be converted into a C++ type.
+     * @return A C++ type representing the object.
      */
-    static inline double toNumber(const Value& value);
+    template<typename T>
+    static inline T toType(const Value& value);
+
+    /**
+     * @brief Returns the data this object represents as the specified type.
+     * @tparam T The C++ type to convert the value into.
+     * @return A C++ type representing the object.
+     */
+    template<typename T>
+    inline T toType() const;
 
     /**
      * @brief Creates a string representation of this object.
@@ -84,5 +92,7 @@ struct Value {
      */
     bool operator==(const Value& rhs) const;
 };
+
+#include "Value.tpp"
 
 #endif //TITANPLUSPLUS_VALUE_H

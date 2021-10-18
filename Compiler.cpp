@@ -20,8 +20,8 @@ Compiler::Compiler() {
     parseRules[Token::Type::GREATER_EQUAL] = {nullptr,     [this] { binary(); },   Precedence::COMPARISON};
     parseRules[Token::Type::LESS]          = {nullptr,     [this] { binary(); },   Precedence::COMPARISON};
     parseRules[Token::Type::LESS_EQUAL]    = {nullptr,     [this] { binary(); },   Precedence::COMPARISON};
-    parseRules[Token::Type::IDENTIFIER]    = {nullptr,     nullptr,   Precedence::NONE};
-    parseRules[Token::Type::STRING]        = {nullptr,     nullptr,   Precedence::NONE};
+    parseRules[Token::Type::IDENTIFIER]    = {[this] { variable(); },     nullptr,   Precedence::NONE};
+    parseRules[Token::Type::STRING]        = {[this] { string(); },     nullptr,   Precedence::NONE};
     parseRules[Token::Type::NUMBER]        = {[this] { number(); },      nullptr,   Precedence::NONE};
     parseRules[Token::Type::AND]           = {nullptr,     nullptr,   Precedence::NONE};
     parseRules[Token::Type::CLASS]         = {nullptr,     nullptr,   Precedence::NONE};
@@ -49,8 +49,13 @@ bool Compiler::compile(const std::string &titanCode, Batch& batch) {
     scanner.init(titanCode);
 
     advance();
-    expression();
-    consume(Token::Type::END_OF_FILE, "Expect end of expression.");
+
+    while (!matchType(Token::Type::END_OF_FILE)) {
+        declaration();
+    }
+
+    //expression();
+    //consume(Token::Type::END_OF_FILE, "Expect end of expression.");
     emitOp(Op::Code::Return);
 #ifdef DEBUG_PRINT_CODE
     if (!parser.hadError) {
@@ -163,9 +168,103 @@ void Compiler::literal() {
     }
 }
 
+void Compiler::string() {
+    emitConstant(Value::fromString(titanSourceCode.substr(parser.previous.start + 1, parser.previous.length - 2)));
+}
+
+void Compiler::declaration() {
+    if (matchType(Token::Type::VAR)) {
+        variableDeclaration();
+    }
+    else {
+        statement();
+    }
+
+    if (parser.panicMode) {
+        synchronise();
+    }
+}
+
+void Compiler::statement() {
+    if (matchType(Token::Type::PRINT)) {
+        expression();
+        consume(Token::Type::SEMICOLON, "Expect ';' after value.");
+        emitOp(Op::Print);
+    }
+    else {
+        expressionStatement();
+    }
+}
+
+void Compiler::expressionStatement() {
+    expression();
+    consume(Token::Type::SEMICOLON, "Expect ';' after expression.");
+    emitOp(Op::Code::Pop);
+}
+
+void Compiler::variableDeclaration() {
+    size_t globalNameIndex = parseVariable("Expect variable name.");
+
+    if (matchType(Token::Type::EQUAL)) {
+        expression();
+    }
+    else {
+        emitOp(Op::Code::Null);
+    }
+    consume(Token::Type::SEMICOLON, "Expect ';' after variable declaration.");
+
+   // emitGlobalVariable(Value::fromString(titanSourceCode.substr(parser.previous.start, parser.previous.length - 1)));
+
+    defineVariable(globalNameIndex);
+}
+
+void Compiler::variable() {
+    namedVariable(parser.previous);
+}
+
+void Compiler::namedVariable(const Token &token) {
+    size_t arg = identifierConstant(token);
+    if (arg == (size_t)-1) {
+        error(parser.previous, "Error defining global variable: Out of 32-bit address space.");
+    }
+    else if (arg >= 1 << (sizeof(Op::Code) * 8)) {
+        emitOp(Op::Code::GetGlobal32);
+        auto indexAsOpCodes = Memory::toOpCodes(arg);
+        emitOps(indexAsOpCodes[0], indexAsOpCodes[1]);
+    }
+    else {
+        emitOp(Op::Code::GetGlobal);
+        emitOp((Op::Code)arg);
+    }
+    //emitGlobalVariable(Value::fromString(titanSourceCode.substr(token.start, token.length)), false);
+}
+
+void Compiler::synchronise() {
+    parser.panicMode = false;
+
+    while (parser.current.type != Token::Type::END_OF_FILE) {
+        if (parser.previous.type == Token::Type::SEMICOLON) return;
+        switch (parser.current.type) {
+            case Token::Type::CLASS:
+            case Token::Type::FUN:
+            case Token::Type::VAR:
+            case Token::Type::FOR:
+            case Token::Type::IF:
+            case Token::Type::WHILE:
+            case Token::Type::PRINT:
+            case Token::Type::RETURN:
+                return;
+
+            default: ; // Do nothing.
+        }
+
+        advance();
+    }
+}
+
 void Compiler::parsePrecedence(Compiler::Precedence precedence) {
     advance();
-    ParseFunction prefixRule = getRule(parser.previous.type)->prefix;//getRule(parser.previous.type)->prefix;
+    ParseFunction prefixRule = getRule(parser.previous.type)->prefix;
     if (prefixRule == nullptr) {
         error(parser.previous, "Expect expression.");
         return;
@@ -179,7 +278,31 @@ void Compiler::parsePrecedence(Compiler::Precedence precedence) {
     }
 }
 
-void Compiler::emitConstant(Value value) {
+size_t Compiler::parseVariable(const std::string &errorMessage) {
+    consume(Token::Type::IDENTIFIER, errorMessage);
+    return identifierConstant(parser.previous);
+}
+
+size_t Compiler::identifierConstant(const Token &token) {
+    return emitConstant(Value::fromString(titanSourceCode.substr(token.start, token.length)));
+}
+
+void Compiler::defineVariable(size_t global) {
+    if (global == (size_t)-1) {
+        error(parser.previous, "Error defining global variable: Out of 32-bit address space.");
+    }
+    else if (global >= 1 << (sizeof(Op::Code) * 8)) {
+        emitOp(Op::Code::DefineGlobal32);
+        auto indexAsOpCodes = Memory::toOpCodes(global);
+        emitOps(indexAsOpCodes[0], indexAsOpCodes[1]);
+    }
+    else {
+        emitOp(Op::Code::DefineGlobal);
+        emitOp((Op::Code)global);
+    }
+}
+
+size_t Compiler::emitConstant(const Value& value) {
     //Gets the current index in the constant pool.
     size_t constantIndex = currentBatch->addConstant(value);
     //If the current index won't fit in the address space of a single Op::Code, use a 32-bit address.
@@ -195,6 +318,13 @@ void Compiler::emitConstant(Value value) {
         emitOp(Op::Code::Constant);
         emitOp((Op::Code)constantIndex);
     }
+    return constantIndex;
+}
+
+bool Compiler::matchType(Token::Type type) {
+    if (parser.current.type != type) return false;
+    advance();
+    return true;
 }
 
 

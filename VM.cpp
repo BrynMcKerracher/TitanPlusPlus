@@ -22,24 +22,32 @@ VM::InterpretResult VM::interpret(const std::string &titanCode) {
 
 VM::InterpretResult VM::run(Batch &batch) {
     while (true) {
-        //Print stack values and disassemble instruction if we're in debug mode.
+        //Print stack values and disassemble instructions if we're in debug mode.
         #ifdef DEBUG_TRACE_EXECUTION
-            std::cout << "\t\t";
-            for (auto& value : stack) {
-                std::cout << "[" << value.toString() << "]";
+            if (!stack.empty()) {
+                for (auto &value: stack) {
+                    std::cout << "[" << value.toString() << "]";
+                }
+                std::cout << "\n";
+                Debug::disassembleInstruction(batch, (size_t) (pc - &batch.opcodes[0]));
             }
-            std::cout << "\n";
-            Debug::disassembleInstruction(batch, (size_t)(pc - &batch.opcodes[0]));
         #endif //DEBUG_TRACE_EXECUTION
         //Op::Code dispatch
         switch (*pc++) {
             case Op::Code::Add: {
-                if (stack.back().type != Value::Type::NUMBER || stack[stack.size() - 1].type != Value::Type::NUMBER) {
-                    runtimeError("Operands must be numbers.", batch);
+                if (checkBinaryOperandsHaveType(Value::Type::NUMBER)) {
+                    const auto operands = popBinaryOperands();
+                    stack.push_back(Value::fromNumber(operands[1].toType<double>() + operands[0].toType<double>()));
+                }
+                else if (checkBinaryOperandsHaveType(Value::Type::STRING)) {
+                    const auto operands = popBinaryOperands();
+                    stack.push_back(Value::fromString(operands[1].toType<std::string>() + operands[0].toType<std::string>()));
+                }
+                else {
+                    std::cout << stack[stack.size() - 2].type << ", " << stack.back().type << "\n";
+                    runtimeError("Operands must be two numbers or two strings.", batch);
                     return InterpretResult::RUNTIME_ERROR;
                 }
-                const auto operands = popBinaryOperands();
-                stack.push_back(Value::fromNumber(operands[1].as.number + operands[0].as.number));
                 break;
             }
             case Op::Code::Constant32: {
@@ -54,13 +62,29 @@ VM::InterpretResult VM::run(Batch &batch) {
                 stack.push_back(constant);
                 break;
             }
+            case Op::Code::DefineGlobal32: {
+                Op::Code firstHalf = *pc++;
+                Op::Code secondHalf = *pc++;
+                Value globalVarName = batch.constantPool[Memory::toValue<size_t>(firstHalf, secondHalf)];
+                globals[globalVarName.toString()] = stack.back();
+                stack.pop_back();
+                break;
+            }
+            case Op::Code::DefineGlobal: {
+                Value globalVarName = batch.constantPool[*pc++];
+                globals[globalVarName.toString()] = stack.back();
+                stack.pop_back();
+                break;
+            }
             case Op::Code::Divide: {
-                if (stack.back().type != Value::Type::NUMBER || stack[stack.size() - 1].type != Value::Type::NUMBER) {
+                if (checkBinaryOperandsHaveType(Value::Type::NUMBER)) {
+                    const auto operands = popBinaryOperands();
+                    stack.push_back(Value::fromNumber(operands[1].toType<double>() / operands[0].toType<double>()));
+                }
+                else {
                     runtimeError("Operands must be numbers.", batch);
                     return InterpretResult::RUNTIME_ERROR;
                 }
-                const auto operands = popBinaryOperands();
-                stack.push_back(Value::fromNumber(operands[1].as.number / operands[0].as.number));
                 break;
             }
             case Op::Code::Equal: {
@@ -73,53 +97,88 @@ VM::InterpretResult VM::run(Batch &batch) {
                 stack.push_back(Value::fromBool(false));
                 break;
             }
+            case Op::Code::GetGlobal32: {
+                Op::Code firstHalf = *pc++;
+                Op::Code secondHalf = *pc++;
+                Value globalVarName = batch.constantPool[Memory::toValue<size_t>(firstHalf, secondHalf)];
+                try {
+                    stack.push_back(globals.at(globalVarName.toString()));
+                }
+                catch (const std::out_of_range& exception) {
+                    runtimeError("Undefined variable '" + globalVarName.toString() + "'", batch);
+                    return InterpretResult::RUNTIME_ERROR;
+                }
+                break;
+                break;
+            }
+            case Op::Code::GetGlobal: {
+                Value globalVarName = batch.constantPool[*pc++];
+                try {
+                    stack.push_back(globals.at(globalVarName.toString()));
+                }
+                catch (const std::out_of_range& exception) {
+                    runtimeError("Undefined variable '" + globalVarName.toString() + "'", batch);
+                    return InterpretResult::RUNTIME_ERROR;
+                }
+                break;
+            }
             case Op::Code::Greater: {
-                if (stack.back().type != Value::Type::NUMBER || stack[stack.size() - 1].type != Value::Type::NUMBER) {
+                if (checkBinaryOperandsHaveType(Value::Type::NUMBER)) {
+                    Value b = popValue();
+                    Value a = popValue();
+                    stack.push_back(Value::fromBool(a.toType<double>() > b.toType<double>()));
+                }
+                else {
                     runtimeError("Operands must be numbers.", batch);
                     return InterpretResult::RUNTIME_ERROR;
                 }
-                Value b = popValue();
-                Value a = popValue();
-                stack.push_back(Value::fromBool(a.as.number > b.as.number));
                 break;
             }
             case Op::Code::GreaterEqual: {
-                if (stack.back().type != Value::Type::NUMBER || stack[stack.size() - 1].type != Value::Type::NUMBER) {
+                if (checkBinaryOperandsHaveType(Value::Type::NUMBER)) {
+                    Value b = popValue();
+                    Value a = popValue();
+                    stack.push_back(Value::fromBool(a.toType<double>() >= b.toType<double>()));
+                }
+                else {
                     runtimeError("Operands must be numbers.", batch);
                     return InterpretResult::RUNTIME_ERROR;
                 }
-                Value b = popValue();
-                Value a = popValue();
-                stack.push_back(Value::fromBool(a.as.number >= b.as.number));
                 break;
             }
             case Op::Code::Less: {
-                if (stack.back().type != Value::Type::NUMBER || stack[stack.size() - 1].type != Value::Type::NUMBER) {
+                if (checkBinaryOperandsHaveType(Value::Type::NUMBER)) {
+                    Value b = popValue();
+                    Value a = popValue();
+                    stack.push_back(Value::fromBool(a.toType<double>() < b.toType<double>()));
+                }
+                else {
                     runtimeError("Operands must be numbers.", batch);
                     return InterpretResult::RUNTIME_ERROR;
                 }
-                Value b = popValue();
-                Value a = popValue();
-                stack.push_back(Value::fromBool(a.as.number < b.as.number));
                 break;
             }
             case Op::Code::LessEqual: {
-                if (stack.back().type != Value::Type::NUMBER || stack[stack.size() - 1].type != Value::Type::NUMBER) {
+                if (checkBinaryOperandsHaveType(Value::Type::NUMBER)) {
+                    Value b = popValue();
+                    Value a = popValue();
+                    stack.push_back(Value::fromBool(a.toType<double>() <= b.toType<double>()));
+                }
+                else {
                     runtimeError("Operands must be numbers.", batch);
                     return InterpretResult::RUNTIME_ERROR;
                 }
-                Value b = popValue();
-                Value a = popValue();
-                stack.push_back(Value::fromBool(a.as.number <= b.as.number));
                 break;
             }
             case Op::Code::Multiply: {
-                if (stack.back().type != Value::Type::NUMBER || stack[stack.size() - 1].type != Value::Type::NUMBER) {
+                if (checkBinaryOperandsHaveType(Value::Type::NUMBER)) {
+                    const auto operands = popBinaryOperands();
+                    stack.push_back(Value::fromNumber(operands[1].toType<double>() * operands[0].toType<double>()));
+                }
+                else {
                     runtimeError("Operands must be numbers.", batch);
                     return InterpretResult::RUNTIME_ERROR;
                 }
-                const auto operands = popBinaryOperands();
-                stack.push_back(Value::fromNumber(operands[1].as.number * operands[0].as.number));
                 break;
             }
             case Op::Code::Negate: {
@@ -127,7 +186,7 @@ VM::InterpretResult VM::run(Batch &batch) {
                     runtimeError("Operand must be a number.", batch);
                     return InterpretResult::RUNTIME_ERROR;
                 }
-                stack.back().as.number *= -1;
+                stack.back().data = stack.back().toType<double>() * -1;
                 break;
             }
             case Op::Code::Not: {
@@ -144,18 +203,27 @@ VM::InterpretResult VM::run(Batch &batch) {
                 stack.push_back(Value::fromNull());
                 break;
             }
-            case Op::Code::Return: {
+            case Op::Code::Pop: {
+                stack.pop_back();
+                break;
+            }
+            case Op::Code::Print: {
                 std::cout << stack.back().toString() << "\n";
                 stack.pop_back();
+                break;
+            }
+            case Op::Code::Return: {
                 return InterpretResult::OK;
             }
             case Op::Code::Subtract: {
-                if (stack.back().type != Value::Type::NUMBER || stack[stack.size() - 1].type != Value::Type::NUMBER) {
+                if (checkBinaryOperandsHaveType(Value::Type::NUMBER)) {
+                    const auto operands = popBinaryOperands();
+                    stack.push_back(Value::fromNumber(operands[1].toType<double>() - operands[0].toType<double>()));
+                }
+                else {
                     runtimeError("Operands must be numbers.", batch);
                     return InterpretResult::RUNTIME_ERROR;
                 }
-                const auto operands = popBinaryOperands();
-                stack.push_back(Value::fromNumber(operands[1].as.number - operands[0].as.number));
                 break;
             }
             case Op::Code::True: {
@@ -187,5 +255,9 @@ void VM::runtimeError(const std::string &format, Batch& batch) {
 }
 
 bool VM::isFalsey(const Value &value) {
-    return value.type == Value::Type::NIL || (value.type == Value::Type::BOOL && !value.as.boolean);
+    return value.type == Value::Type::NIL || (value.type == Value::Type::BOOL && !value.toType<bool>());
+}
+
+bool VM::checkBinaryOperandsHaveType(Value::Type type) const {
+    return stack.size() > 1 && stack.back().type == type && stack[stack.size() - 2].type == type;
 }

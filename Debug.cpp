@@ -1,10 +1,16 @@
 #include "Debug.h"
 
 void Debug::disassembleBatch(const Batch &batch) {
-    std::cout << "== ByteCode Disassembly ==\n";
+    std::cout << "== Batch Disassembly ==\n";
+    std::cout << "[Constants]:\n";
+    for (auto& constant : batch.constantPool) {
+        std::cout << "'" << constant.toString() << "'\n";
+    }
+    std::cout << "[Op Codes]:\n";
     for (size_t instructionIndex = 0; instructionIndex < batch.opcodes.size();) {
         instructionIndex += disassembleInstruction(batch, instructionIndex);
     }
+    std::cout << "\n";
 }
 
 int Debug::disassembleInstruction(const Batch &batch, size_t instructionIndex) {

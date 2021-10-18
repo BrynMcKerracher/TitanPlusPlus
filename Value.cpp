@@ -1,30 +1,27 @@
 #include "Value.h"
 
 Value Value::fromBool(bool value) {
-    return (Value){Value::Type::BOOL, {.boolean = value}};
+    return {Value::Type::BOOL, value};
 }
 
 Value Value::fromNull() {
-    return (Value){Value::Type::NIL, {.number = 0}};
+    return {Value::Type::NIL, 0.f};
 }
 
 Value Value::fromNumber(double value) {
-    return (Value){Value::Type::NUMBER, {.number = value}};
+    return {Value::Type::NUMBER, value};
 }
 
-bool Value::toBool(const Value &value) {
-    return value.as.boolean;
-}
-
-double Value::toNumber(const Value &value) {
-    return value.as.number;
+Value Value::fromString(const std::string &value) {
+    return {Value::Type::STRING, value};
 }
 
 std::string Value::toString() const {
     switch (type) {
-        case Type::BOOL:   return as.boolean ? "true" : "false";
+        case Type::BOOL:   return std::get<bool>(data) ? "true" : "false";
         case Type::NIL:    return "null";
-        case Type::NUMBER: return std::to_string(this->as.number);
+        case Type::NUMBER: return std::to_string(std::get<double>(data));
+        case Type::STRING: return std::get<std::string>(data);
         default:           return "Unknown type.";
     }
 }
@@ -32,10 +29,11 @@ std::string Value::toString() const {
 bool Value::operator==(const Value &rhs) const {
     if (this->type != rhs.type) return false;
     switch (this->type) {
-        case Value::Type::BOOL:     return this->as.boolean == rhs.as.boolean;
-        case Value::Type::NIL:      return true;
-        case Value::Type::NUMBER:   return this->as.number == rhs.as.number;
-        default: return false;
+        case Type::BOOL:   return std::get<bool>(this->data) == std::get<bool>(rhs.data);
+        case Type::NIL:    return true;
+        case Type::NUMBER: return std::get<double>(this->data) == std::get<double>(rhs.data);
+        case Type::STRING: return std::get<std::string>(this->data) == std::get<std::string>(rhs.data);
+        default:           return false;
     }
 }
 

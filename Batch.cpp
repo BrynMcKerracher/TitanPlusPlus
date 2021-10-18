@@ -16,7 +16,7 @@ void Batch::addOps(const std::vector<Op::Code> &codes, int lineNum) {
     }
 }
 
-size_t Batch::addConstant(Value value) {
+size_t Batch::addConstant(const Value& value) {
     constantPool.push_back(value);
     return constantPool.size() - 1;
 }

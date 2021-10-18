@@ -25,7 +25,7 @@ static void repl(VM& vm) {
     }
 }
 
-static std::string runFile(const std::string& path) {
+static std::string fileToString(const std::string& path) {
     std::ifstream file(path);
     std::stringstream stream;
     stream << file.rdbuf();
@@ -69,7 +69,7 @@ int main(int argc, const char** argv) {
         repl(vm);
     }
     else if (argc == 2) {
-        runFile(argv[1]);
+        vm.interpret(fileToString(argv[1]));
     }
     else {
         std::cout << "Usage: Titan [path]\n";

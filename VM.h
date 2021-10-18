@@ -8,13 +8,16 @@
  * @brief Contains the definition for Virtual Machine.
  */
 
+#include <unordered_set>
 #include <iostream>
+#include <memory>
 #include "Batch.h"
 #include "Ops.h"
 #include "Memory.h"
 #include "Debug.h"
 #include "Compiler.h"
 #include "Value.h"
+#include "Object.h"
 
 //Enable verbose tracing of bytecode execution
 #define DEBUG_TRACE_EXECUTION
@@ -50,9 +53,12 @@ public:
      */
     InterpretResult interpret(const std::string& titanCode);
 protected:
-    Op::Code* pc = nullptr;             ///< Program counter.
-    std::vector<Value> stack;           ///< The VM's value stack.
-    const size_t MaxStackSize = 4096;   ///< The maximum size of the value stack before stack overflow.
+    Op::Code* pc = nullptr;                         ///< Program counter.
+    std::vector<Value> stack;                       ///< The VM's value stack.
+    const size_t MaxStackSize = 4096;               ///< The maximum size of the value stack before stack overflow.
+    std::vector<SharedObject> objects;              ///< Holds all complex objects.
+    std::unordered_set<std::string> strings;        ///< Interned hashmap of all defined strings.
+    std::unordered_map<std::string, Value> globals; ///< Hashmap of all global variables by name.
 
     /**
      * Executes the bytecode instructions of a batch.
@@ -90,7 +96,7 @@ protected:
     /**
      * @brief Prints an error, resets the stack and halts runtime execution.
      * @param format The error string to print.
-     * @param ...
+     * @param batch The batch that caused the runtime error.
      */
     void runtimeError(const std::string& format, Batch& batch);
 
@@ -99,8 +105,14 @@ protected:
      * @param value The value to be tested for falsiness.
      * @return True if the value evaluates to false, otherwise false.
      */
-    bool isFalsey(const Value& value);
-};
+    static bool isFalsey(const Value& value);
 
+    /**
+     * @brief Checks if the backmost two values on the stack have the provided type.
+     * @param type The type we expect the top two values on the stack to have.
+     * @return True if the backmost two values have the provided type, otherwise false.
+     */
+    bool checkBinaryOperandsHaveType(Value::Type type) const;
+};
 
 #endif //TITANPLUSPLUS_VM_H
