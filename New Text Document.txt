@@ -1,0 +1,3 @@
+var test1 = "str";
+var test2 = test1 + "ing";
+print test2;
