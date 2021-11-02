@@ -47,6 +47,9 @@ Token Scanner::scanToken() {
     if (isDigit(nextChar)) {
         return parseNumber();
     }
+    if (isMatrixPrefix(nextChar)) {
+        return parseMatrix();
+    }
 
     switch (nextChar) {
         //1-character tokens
@@ -69,7 +72,7 @@ Token Scanner::scanToken() {
         case '>': return Token(match('=') ? Token::Type::GREATER_EQUAL : Token::Type::GREATER, start, current - start, line);
         case '<': return Token(match('=') ? Token::Type::LESS_EQUAL : Token::Type::LESS, start, current - start, line);
 
-        default: return Token(Token::Type::ERROR, start, current - start, line);
+        default:  return Token(Token::Type::ERROR, start, current - start, line);
     }
 }
 
@@ -89,11 +92,15 @@ bool Scanner::isDigit(char c) {
     return c >= '0' && c <= '9';
 }
 
+bool Scanner::isMatrixPrefix(char c) const {
+    return c == '[' && peek() == '[';
+}
+
 char Scanner::advanceIndex() {
     return titanSourceCode[current++];
 }
 
-char Scanner::peek(int offset) {
+char Scanner::peek(int offset) const {
     return titanSourceCode[current + offset];
 }
 
@@ -199,4 +206,11 @@ Token Scanner::parseIdentifer() {
     return Token(getIdentifierType(), start, current - start, line);
 }
 
+Token Scanner::parseMatrix() {
+    while (peek() != ']' || peek(1) != ']') advanceIndex();
+    //Consume the two ']' characters.
+    advanceIndex();
+    advanceIndex();
+    return Token(Token::Type::MATRIX, start, current - start, line);
+}
 

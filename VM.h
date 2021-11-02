@@ -17,7 +17,6 @@
 #include "Debug.h"
 #include "Compiler.h"
 #include "Value.h"
-#include "Object.h"
 
 //Enable verbose tracing of bytecode execution
 #define DEBUG_TRACE_EXECUTION
@@ -56,7 +55,6 @@ protected:
     Op::Code* pc = nullptr;                         ///< Program counter.
     std::vector<Value> stack;                       ///< The VM's value stack.
     const size_t MaxStackSize = 4096;               ///< The maximum size of the value stack before stack overflow.
-    std::vector<SharedObject> objects;              ///< Holds all complex objects.
     std::unordered_set<std::string> strings;        ///< Interned hashmap of all defined strings.
     std::unordered_map<std::string, Value> globals; ///< Hashmap of all global variables by name.
 

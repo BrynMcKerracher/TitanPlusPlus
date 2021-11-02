@@ -75,6 +75,13 @@ protected:
     static inline bool isDigit(char c);
 
     /**
+     * Tests whether the given character is a '[' followed by another '['.
+     * @param c The character to be tested.
+     * @return True if a matrix prefix is found, otherwise false.
+     */
+    inline bool isMatrixPrefix(char c) const;
+
+    /**
      * @brief Increments 'current' and returns the character before it in the code.
      * @return The character at the current index.
      */
@@ -85,7 +92,7 @@ protected:
      * @param offset The number of characters to look forward or backwards.
      * @return The character in the source at position 'current + offset'.
      */
-    char peek(int offset = 0);
+    char peek(int offset = 0) const;
 
     /**
      * Skips all contiguous whitespace immediately following the current character in the
@@ -138,6 +145,12 @@ protected:
      * @return A token representing an identifier.
      */
     Token parseIdentifer();
+
+    /**
+     * @brief Scan the next token as a matrix.
+     * @return A token representing the matrix.
+     */
+    Token parseMatrix();
 };
 
 #endif //TITANPLUSPLUS_SCANNER_H

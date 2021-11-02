@@ -42,7 +42,7 @@ public:
         LESS, LESS_EQUAL,
 
         // Literals.
-        IDENTIFIER, STRING, NUMBER,
+        IDENTIFIER, STRING, NUMBER, MATRIX,
 
         // Keywords.
         AND, CLASS, ELSE, FALSE,

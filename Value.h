@@ -10,7 +10,7 @@
 
 #include <string>
 #include <variant>
-#include "Object.h"
+#include "Matrix.h"
 
 /**
  * Value is essentially a tagged-union structure with utility functions.
@@ -29,11 +29,12 @@ struct Value {
         NIL,    ///< Null value.
         NUMBER, ///< Numeric value (double precision).
         STRING, ///< A sequence of characters.
-        OBJECT, ///< Heap-allocated object.
+        MATRIXF, ///< A numeric matrix of floats.
+        MATRIXD, ///< A numeric matrix of doubles.
     };
 
-    Value::Type type;                                     ///< This Object's value type.
-    std::variant<bool, double, std::string, Object> data; ///< Each value instance can only represent one type of value at once.
+    Value::Type type = Value::Type::NIL;                            ///< This Object's value type.
+    std::variant<bool, double, std::string, MatrixF, MatrixD> data; ///< Each value instance can only represent one type of value at once.
 
     /**
      * @brief Converts a C++ boolean value to a Titan Value object.
@@ -63,13 +64,18 @@ struct Value {
     static Value fromString(const std::string& value);
 
     /**
-     * @brief Returns the data the provided object represents as the specified type.
-     * @tparam T The C++ type to convert the value into.
-     * @param value The value to be converted into a C++ type.
-     * @return A C++ type representing the object.
+     * @brief Converts a MatrixF to a Titan Value object.
+     * @param value The matrix to be converted.
+     * @return A Value object representing the given MatrixF.
      */
-    template<typename T>
-    static inline T toType(const Value& value);
+    static Value fromMatrixF(const MatrixF& value);
+
+    /**
+     * @brief Converts a MatrixD to a Titan Value object.
+     * @param value The matrix to be converted.
+     * @return A Value object representing the given MatrixD.
+     */
+    static Value fromMatrixD(const MatrixD& value);
 
     /**
      * @brief Returns the data this object represents as the specified type.
@@ -91,6 +97,16 @@ struct Value {
      * @return True if the values are equal, otherwise false
      */
     bool operator==(const Value& rhs) const;
+
+    /**
+     * For use printing human readable errors when exceptions are thrown by operands with
+     * incompatible types.
+     *
+     * @brief Creates a human readable std::string representation of the given Value::Type.
+     * @param type The value type to convert to std::string.
+     * @return A human readable std::string representation of the given Value::Type.
+     */
+    static std::string typeToString(Value::Type type);
 };
 
 #include "Value.tpp"

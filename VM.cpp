@@ -14,7 +14,6 @@ VM::InterpretResult VM::interpret(const std::string &titanCode) {
 
     //Point PC to first instruction
     pc = &batch.opcodes[0];
-
     InterpretResult result = run(batch);
 
     return result;
@@ -25,12 +24,13 @@ VM::InterpretResult VM::run(Batch &batch) {
         //Print stack values and disassemble instructions if we're in debug mode.
         #ifdef DEBUG_TRACE_EXECUTION
             if (!stack.empty()) {
+                std::cout << "\t\t";
                 for (auto &value: stack) {
                     std::cout << "[" << value.toString() << "]";
                 }
                 std::cout << "\n";
-                Debug::disassembleInstruction(batch, (size_t) (pc - &batch.opcodes[0]));
             }
+            Debug::disassembleInstruction(batch, (size_t) (pc - &batch.opcodes[0]));
         #endif //DEBUG_TRACE_EXECUTION
         //Op::Code dispatch
         switch (*pc++) {
@@ -43,8 +43,15 @@ VM::InterpretResult VM::run(Batch &batch) {
                     const auto operands = popBinaryOperands();
                     stack.push_back(Value::fromString(operands[1].toType<std::string>() + operands[0].toType<std::string>()));
                 }
+                else if (checkBinaryOperandsHaveType(Value::Type::MATRIXF)) {
+                    const auto operands = popBinaryOperands();
+                    stack.push_back(Value::fromMatrixF(operands[1].toType<MatrixF>() + operands[0].toType<MatrixF>()));
+                }
+                else if (checkBinaryOperandsHaveType(Value::Type::MATRIXD)) {
+                    const auto operands = popBinaryOperands();
+                    stack.push_back(Value::fromMatrixD(operands[1].toType<MatrixD>() + operands[0].toType<MatrixD>()));
+                }
                 else {
-                    std::cout << stack[stack.size() - 2].type << ", " << stack.back().type << "\n";
                     runtimeError("Operands must be two numbers or two strings.", batch);
                     return InterpretResult::RUNTIME_ERROR;
                 }
@@ -101,6 +108,7 @@ VM::InterpretResult VM::run(Batch &batch) {
                 Op::Code firstHalf = *pc++;
                 Op::Code secondHalf = *pc++;
                 Value globalVarName = batch.constantPool[Memory::toValue<size_t>(firstHalf, secondHalf)];
+                stack.pop_back();
                 try {
                     stack.push_back(globals.at(globalVarName.toString()));
                 }
@@ -109,10 +117,10 @@ VM::InterpretResult VM::run(Batch &batch) {
                     return InterpretResult::RUNTIME_ERROR;
                 }
                 break;
-                break;
             }
             case Op::Code::GetGlobal: {
                 Value globalVarName = batch.constantPool[*pc++];
+                stack.pop_back();
                 try {
                     stack.push_back(globals.at(globalVarName.toString()));
                 }

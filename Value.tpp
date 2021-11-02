@@ -2,11 +2,7 @@
 #define TITANPLUSPLUS_VALUE_TPP
 
 #include <variant>
-
-template <typename T>
-inline T Value::toType(const Value &value) {
-    return std::get<T>(value.data);
-}
+#include "Value.h"
 
 template <typename T>
 inline T Value::toType() const {

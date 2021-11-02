@@ -23,6 +23,7 @@ Compiler::Compiler() {
     parseRules[Token::Type::IDENTIFIER]    = {[this] { variable(); },     nullptr,   Precedence::NONE};
     parseRules[Token::Type::STRING]        = {[this] { string(); },     nullptr,   Precedence::NONE};
     parseRules[Token::Type::NUMBER]        = {[this] { number(); },      nullptr,   Precedence::NONE};
+    parseRules[Token::Type::MATRIX]        = {[this] { matrix(); },     nullptr,   Precedence::NONE};
     parseRules[Token::Type::AND]           = {nullptr,     nullptr,   Precedence::NONE};
     parseRules[Token::Type::CLASS]         = {nullptr,     nullptr,   Precedence::NONE};
     parseRules[Token::Type::ELSE]          = {nullptr,     nullptr,   Precedence::NONE};
@@ -54,8 +55,6 @@ bool Compiler::compile(const std::string &titanCode, Batch& batch) {
         declaration();
     }
 
-    //expression();
-    //consume(Token::Type::END_OF_FILE, "Expect end of expression.");
     emitOp(Op::Code::Return);
 #ifdef DEBUG_PRINT_CODE
     if (!parser.hadError) {
@@ -87,7 +86,7 @@ void Compiler::error(Token &token, const std::string &message) {
     std::cerr << "[Line " << token.line << "] Error";
 
     switch (token.type) {
-        case Token::Type::END_OF_FILE: std::cerr << " at end";                                    break;
+        case Token::Type::END_OF_FILE: std::cerr << " at end";                                     break;
         case Token::Type::ERROR:                                                                   break;
         default: std::cerr << " at '" << titanSourceCode.substr(token.start, token.length) << "'"; break;
     }
@@ -172,6 +171,11 @@ void Compiler::string() {
     emitConstant(Value::fromString(titanSourceCode.substr(parser.previous.start + 1, parser.previous.length - 2)));
 }
 
+void Compiler::matrix() {
+   // std::cout << "Matrix: '" << titanSourceCode.substr(parser.previous.start + 1, parser.previous.length - 1) << "'\n";
+    emitConstant(Value::fromMatrixD(MatrixD(titanSourceCode.substr(parser.previous.start + 1, parser.previous.length - 2))));
+}
+
 void Compiler::declaration() {
     if (matchType(Token::Type::VAR)) {
         variableDeclaration();
@@ -224,6 +228,8 @@ void Compiler::variable() {
 
 void Compiler::namedVariable(const Token &token) {
     size_t arg = identifierConstant(token);
+
+    //Define Global
     if (arg == (size_t)-1) {
         error(parser.previous, "Error defining global variable: Out of 32-bit address space.");
     }

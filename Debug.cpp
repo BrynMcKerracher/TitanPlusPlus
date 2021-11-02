@@ -47,3 +47,4 @@ int Debug::disassembleInstruction(const Batch &batch, size_t instructionIndex) {
 
     return Op::instructionLength(instructionOpCode);
 }
+

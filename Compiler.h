@@ -149,6 +149,11 @@ protected:
      void string();
 
      /**
+      * @brief Parses a matrix.
+      */
+     void matrix();
+
+     /**
       * @brief Parses a declaration.
       */
      void declaration();
