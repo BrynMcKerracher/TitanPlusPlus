@@ -77,7 +77,7 @@ protected:
      * @brief Pops and returns the two back-most stack values.
      * @return The two back-most values on the stack.
      */
-    inline std::vector<Value> popBinaryOperands();
+    std::vector<Value> popBinaryOperands();
 
     /**
      * Pops and returns a copy of the back-most value on the stack.
@@ -89,7 +89,7 @@ protected:
      * @brief Pops and returns the back-most value on the stack.
      * @return The back-most value on the stack.
      */
-    inline Value popValue();
+    Value popValue();
 
     /**
      * @brief Prints an error, resets the stack and halts runtime execution.

@@ -112,8 +112,30 @@ void Compiler::emitOps(Op::Code a, Op::Code b) {
     emitOp(b);
 }
 
+Op::Code Compiler::emitJump(Op::Code jumpOp) {
+    emitOp(jumpOp);
+    emitOp((Op::Code)0);
+    return (Op::Code)(currentBatch->opcodes.size() - 1);
+}
+
+void Compiler::backPatchJump(Op::Code offset) {
+    if (currentBatch->opcodes.size() - offset - 1 >= (Op::Code)-1) {
+        error(parser.current, "Jump back-patch overflow: Operand is too large for a single jump instruction.");
+    }
+    Op::Code jump = (Op::Code)(currentBatch->opcodes.size() - offset - 1);
+
+    currentBatch->opcodes[offset] = jump;
+}
+
 void Compiler::expression() {
     parsePrecedence(Precedence::ASSIGNMENT);
+}
+
+void Compiler::block() {
+    while (parser.current.type != Token::Type::RIGHT_BRACE and parser.current.type != Token::Type::END_OF_FILE) {
+        declaration();
+    }
+    consume(Token::Type::RIGHT_BRACE, "Expect '}' after block.");
 }
 
 void Compiler::number() {
@@ -195,6 +217,14 @@ void Compiler::statement() {
         consume(Token::Type::SEMICOLON, "Expect ';' after value.");
         emitOp(Op::Print);
     }
+    else if (matchType(Token::Type::IF)) {
+        ifStatement();
+    }
+    else if (matchType(Token::Type::LEFT_BRACE)) {
+        beginScope();
+        block();
+        endScope();
+    }
     else {
         expressionStatement();
     }
@@ -204,6 +234,28 @@ void Compiler::expressionStatement() {
     expression();
     consume(Token::Type::SEMICOLON, "Expect ';' after expression.");
     emitOp(Op::Code::Pop);
+}
+
+void Compiler::ifStatement() {
+    //Parse 'if' statement
+    consume(Token::Type::LEFT_PAREN, "Expect '(' after 'if'.");
+    expression();
+    consume(Token::Type::RIGHT_PAREN, "Expect ')' after condition.");
+
+    Op::Code ifJump = emitJump(Op::Code::JumpIfFalse);
+    emitOp(Op::Code::Pop);
+    statement();
+
+    //Op::Code elseJump = emitJump(Op::Code::Jump);
+
+    backPatchJump(ifJump);
+    emitOp(Op::Code::Pop);
+
+    //Look for 'else'
+   // if (matchType(Token::Type::ELSE)) {
+   //     statement();
+   // }
+  //  backPatchJump(elseJump);
 }
 
 void Compiler::variableDeclaration() {
@@ -217,8 +269,6 @@ void Compiler::variableDeclaration() {
     }
     consume(Token::Type::SEMICOLON, "Expect ';' after variable declaration.");
 
-   // emitGlobalVariable(Value::fromString(titanSourceCode.substr(parser.previous.start, parser.previous.length - 1)));
-
     defineVariable(globalNameIndex);
 }
 
@@ -226,23 +276,71 @@ void Compiler::variable() {
     namedVariable(parser.previous);
 }
 
-void Compiler::namedVariable(const Token &token) {
-    size_t arg = identifierConstant(token);
-
-    //Define Global
-    if (arg == (size_t)-1) {
-        error(parser.previous, "Error defining global variable: Out of 32-bit address space.");
+std::size_t Compiler::resolveLocalVariable(Token name) {
+    std::cout << "Start...\n";
+    if (locals.empty()) return (std::size_t)-1;
+    for (std::size_t i = locals.size() - 1; i >= 0; --i) {
+        std::cout << "i = " << i << "\n";
+        if (locals[i].name == name) {
+            if (locals[i].scopeDepth == (std::size_t)-1) {
+                error(parser.current, "Variable cannot be initialised with itself!");
+            }
+            return i;
+        }
     }
-    else if (arg >= 1 << (sizeof(Op::Code) * 8)) {
-        emitOp(Op::Code::GetGlobal32);
-        auto indexAsOpCodes = Memory::toOpCodes(arg);
-        emitOps(indexAsOpCodes[0], indexAsOpCodes[1]);
+    return (std::size_t)-1;
+}
+
+void Compiler::namedVariable(const Token &token) {
+    Op::Code getOp, setOp, getOp32, setOp32;
+    std::size_t arg = resolveLocalVariable(token);
+    std::cout << "ARG: " << arg << "\n";
+    std::cout << "";
+    if (arg == (std::size_t)-1) {
+        getOp   = Op::Code::GetLocal;
+        getOp32 = Op::Code::GetLocal32;
+        setOp   = Op::Code::SetLocal;
+        setOp32 = Op::Code::SetLocal32;
     }
     else {
-        emitOp(Op::Code::GetGlobal);
-        emitOp((Op::Code)arg);
+        arg = identifierConstant(token);
+        getOp   = Op::Code::GetGlobal;
+        getOp32 = Op::Code::GetGlobal32;
+        setOp   = Op::Code::SetGlobal;
+        setOp32 = Op::Code::SetGlobal32;
     }
-    //emitGlobalVariable(Value::fromString(titanSourceCode.substr(token.start, token.length)), false);
+
+    if (canAssign and matchType(Token::Type::EQUAL)) {
+        expression();
+        //Set Global
+        if (arg == (std::size_t)-1) {
+            error(parser.previous, "Error setting global variable: Out of address space.");
+        }
+        else if (arg >= 1 << (sizeof(Op::Code) * 8)) {
+            emitOp(setOp32);
+            auto indexAsOpCodes = Memory::toOpCodes(arg);
+            emitOps(indexAsOpCodes[0], indexAsOpCodes[1]);
+        }
+        else {
+            emitOp(setOp);
+            emitOp((Op::Code)arg);
+        }
+    }
+    else {
+        //Get Global
+        if (arg == (std::size_t)-1) {
+            error(parser.previous, "Error defining global variable: Out of address space.");
+        }
+        else if (arg >= 1 << (sizeof(Op::Code) * 8)) {
+            emitOp(getOp32);
+            auto indexAsOpCodes = Memory::toOpCodes(arg);
+            emitOps(indexAsOpCodes[0], indexAsOpCodes[1]);
+        }
+        else {
+            emitOp(getOp);
+            emitOp((Op::Code)arg);
+        }
+    }
 }
 
 void Compiler::synchronise() {
@@ -275,6 +373,8 @@ void Compiler::parsePrecedence(Compiler::Precedence precedence) {
         error(parser.previous, "Expect expression.");
         return;
     }
+
+    canAssign = precedence <= Precedence::ASSIGNMENT;
     prefixRule();
 
     while (precedence <= getRule(parser.current.type)->precedence) {
@@ -282,10 +382,18 @@ void Compiler::parsePrecedence(Compiler::Precedence precedence) {
         ParseFunction infixRule = getRule(parser.previous.type)->infix;
         infixRule();
     }
+
+    if (canAssign && matchType(Token::Type::EQUAL)) {
+        error(parser.previous, "Invalid assignment target.");
+    }
 }
 
 size_t Compiler::parseVariable(const std::string &errorMessage) {
     consume(Token::Type::IDENTIFIER, errorMessage);
+
+    declareVariable();
+    if (scopeDepth > 0) return 0;
+
     return identifierConstant(parser.previous);
 }
 
@@ -293,7 +401,39 @@ size_t Compiler::identifierConstant(const Token &token) {
     return emitConstant(Value::fromString(titanSourceCode.substr(token.start, token.length)));
 }
 
+void Compiler::addLocalVariable(Token name) {
+    //Check if we overflow the local variable array.
+    if (locals.size() == (std::size_t)-1) {
+        error(parser.previous, "Too many local variables in function.");
+    }
+    //Check if an identically-named variable exists in the scame scope level.
+    for (std::size_t i = locals.size() - 1; i >= 0; --i) {
+        if (locals[i].scopeDepth != -1 and locals[i].scopeDepth < scopeDepth) {
+            break;
+        }
+        if (locals[i].name.start == name.start and locals[i].name.length == name.length) {
+            error(parser.previous, "A variable with name '" + titanSourceCode.substr(name.start, name.length) + "' already exists in the current scope.");
+        }
+    }
+
+    Local local;
+    local.name = name;
+    local.scopeDepth = scopeDepth;
+    locals.push_back(local);
+}
+
+void Compiler::declareVariable() {
+    if (scopeDepth == 0) return; //Scope level 0 is global scope, so return.
+
+    Token* name = &parser.previous;
+    addLocalVariable(*name);
+}
+
 void Compiler::defineVariable(size_t global) {
+    if (scopeDepth > 0) {
+        locals.back().scopeDepth = scopeDepth;
+        return;
+    }
     if (global == (size_t)-1) {
         error(parser.previous, "Error defining global variable: Out of 32-bit address space.");
     }
@@ -331,6 +471,21 @@ bool Compiler::matchType(Token::Type type) {
     if (parser.current.type != type) return false;
     advance();
     return true;
+}
+
+void Compiler::beginScope() {
+    scopeDepth++;
+}
+
+void Compiler::endScope() {
+    scopeDepth--;
+
+    //Pop local variables when they're no longer in scope.
+    std::size_t popCount = 0;
+    for (; !locals.empty() and locals.back().scopeDepth > scopeDepth; ++popCount) {
+        locals.pop_back();
+    }
+    emitOps(Op::Code::PopN, (Op::Code)popCount);
 }
 
 

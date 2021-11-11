@@ -1,0 +1,181 @@
+Compiling the CUDA compiler identification source file "CMakeCUDACompilerId.cu" failed.
+Compiler: C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.4/bin/nvcc.exe 
+Build flags: 
+Id flags: --keep;--keep-dir;tmp -v
+
+The output was:
+1
+
+X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\CMakeFiles\3.20.2\CompilerIdCUDA>call "C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.29.30133/bin/HostX64/x64/../../../../../../../VC/Auxiliary/Build/vcvars64.bat" 
+**********************************************************************
+** Visual Studio 2019 Developer Command Prompt v16.11.5
+** Copyright (c) 2021 Microsoft Corporation
+**********************************************************************
+The input line is too long.
+The syntax of the command is incorrect.
+#$ C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.29.30133/bin/HostX64/x64/../../../../../../../VC/Auxiliary/Build/vcvars64.bat
+nvcc fatal   : Could not set up the environment for Microsoft Visual Studio using 'C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.29.30133/bin/HostX64/x64/../../../../../../../VC/Auxiliary/Build/vcvars64.bat'
+
+
+Compiling the CUDA compiler identification source file "CMakeCUDACompilerId.cu" failed.
+Compiler: C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.4/bin/nvcc.exe 
+Build flags: 
+Id flags:  -v
+
+The output was:
+1
+
+X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\CMakeFiles\3.20.2\CompilerIdCUDA>call "C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.29.30133/bin/HostX64/x64/../../../../../../../VC/Auxiliary/Build/vcvars64.bat" 
+**********************************************************************
+** Visual Studio 2019 Developer Command Prompt v16.11.5
+** Copyright (c) 2021 Microsoft Corporation
+**********************************************************************
+The input line is too long.
+The syntax of the command is incorrect.
+#$ C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.29.30133/bin/HostX64/x64/../../../../../../../VC/Auxiliary/Build/vcvars64.bat
+nvcc fatal   : Could not set up the environment for Microsoft Visual Studio using 'C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.29.30133/bin/HostX64/x64/../../../../../../../VC/Auxiliary/Build/vcvars64.bat'
+
+
+Compiling the CUDA compiler identification source file "CMakeCUDACompilerId.cu" failed.
+Compiler: C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.4/bin/nvcc.exe 
+Build flags: 
+Id flags: --keep;--keep-dir;tmp -v
+
+The output was:
+1
+
+X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\CMakeFiles\3.20.2\CompilerIdCUDA>call "C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.29.30133/bin/HostX64/x64/../../../../../../../VC/Auxiliary/Build/vcvars64.bat" 
+**********************************************************************
+** Visual Studio 2019 Developer Command Prompt v16.11.5
+** Copyright (c) 2021 Microsoft Corporation
+**********************************************************************
+The input line is too long.
+The syntax of the command is incorrect.
+#$ C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.29.30133/bin/HostX64/x64/../../../../../../../VC/Auxiliary/Build/vcvars64.bat
+nvcc fatal   : Could not set up the environment for Microsoft Visual Studio using 'C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.29.30133/bin/HostX64/x64/../../../../../../../VC/Auxiliary/Build/vcvars64.bat'
+
+
+Compiling the CUDA compiler identification source file "CMakeCUDACompilerId.cu" failed.
+Compiler: C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.4/bin/nvcc.exe 
+Build flags: 
+Id flags:  -v
+
+The output was:
+1
+
+X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\CMakeFiles\3.20.2\CompilerIdCUDA>call "C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.29.30133/bin/HostX64/x64/../../../../../../../VC/Auxiliary/Build/vcvars64.bat" 
+**********************************************************************
+** Visual Studio 2019 Developer Command Prompt v16.11.5
+** Copyright (c) 2021 Microsoft Corporation
+**********************************************************************
+The input line is too long.
+The syntax of the command is incorrect.
+#$ C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.29.30133/bin/HostX64/x64/../../../../../../../VC/Auxiliary/Build/vcvars64.bat
+nvcc fatal   : Could not set up the environment for Microsoft Visual Studio using 'C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.29.30133/bin/HostX64/x64/../../../../../../../VC/Auxiliary/Build/vcvars64.bat'
+
+
+Checking whether the CUDA compiler is NVIDIA using "" did not match "nvcc: NVIDIA \(R\) Cuda compiler driver":
+nvcc fatal   : No input files specified; use option --help for more information
+Checking whether the CUDA compiler is Clang using "" did not match "(clang version)":
+nvcc fatal   : No input files specified; use option --help for more information
+Checking whether the CUDA compiler is NVIDIA using "" did not match "nvcc: NVIDIA \(R\) Cuda compiler driver":
+nvcc fatal   : No input files specified; use option --help for more information
+Checking whether the CUDA compiler is Clang using "" did not match "(clang version)":
+nvcc fatal   : No input files specified; use option --help for more information
+Compiling the CUDA compiler identification source file "CMakeCUDACompilerId.cu" failed.
+Compiler: C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.4/bin/nvcc.exe 
+Build flags: 
+Id flags: --keep;--keep-dir;tmp -v
+
+The output was:
+1
+
+X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\CMakeFiles\3.20.2\CompilerIdCUDA>call "C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.29.30133/bin/HostX64/x64/../../../../../../../VC/Auxiliary/Build/vcvars64.bat" 
+**********************************************************************
+** Visual Studio 2019 Developer Command Prompt v16.11.5
+** Copyright (c) 2021 Microsoft Corporation
+**********************************************************************
+The input line is too long.
+The syntax of the command is incorrect.
+#$ C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.29.30133/bin/HostX64/x64/../../../../../../../VC/Auxiliary/Build/vcvars64.bat
+nvcc fatal   : Could not set up the environment for Microsoft Visual Studio using 'C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.29.30133/bin/HostX64/x64/../../../../../../../VC/Auxiliary/Build/vcvars64.bat'
+
+
+Compiling the CUDA compiler identification source file "CMakeCUDACompilerId.cu" failed.
+Compiler: C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.4/bin/nvcc.exe 
+Build flags: 
+Id flags:  -v
+
+The output was:
+1
+
+X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\CMakeFiles\3.20.2\CompilerIdCUDA>call "C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.29.30133/bin/HostX64/x64/../../../../../../../VC/Auxiliary/Build/vcvars64.bat" 
+**********************************************************************
+** Visual Studio 2019 Developer Command Prompt v16.11.5
+** Copyright (c) 2021 Microsoft Corporation
+**********************************************************************
+The input line is too long.
+The syntax of the command is incorrect.
+#$ C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.29.30133/bin/HostX64/x64/../../../../../../../VC/Auxiliary/Build/vcvars64.bat
+nvcc fatal   : Could not set up the environment for Microsoft Visual Studio using 'C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.29.30133/bin/HostX64/x64/../../../../../../../VC/Auxiliary/Build/vcvars64.bat'
+
+
+Compiling the CUDA compiler identification source file "CMakeCUDACompilerId.cu" failed.
+Compiler: C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.4/bin/nvcc.exe 
+Build flags: 
+Id flags: --keep;--keep-dir;tmp -v
+
+The output was:
+1
+
+X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\CMakeFiles\3.20.2\CompilerIdCUDA>call "C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.29.30133/bin/HostX64/x64/../../../../../../../VC/Auxiliary/Build/vcvars64.bat" 
+**********************************************************************
+** Visual Studio 2019 Developer Command Prompt v16.11.5
+** Copyright (c) 2021 Microsoft Corporation
+**********************************************************************
+The input line is too long.
+The syntax of the command is incorrect.
+#$ C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.29.30133/bin/HostX64/x64/../../../../../../../VC/Auxiliary/Build/vcvars64.bat
+nvcc fatal   : Could not set up the environment for Microsoft Visual Studio using 'C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.29.30133/bin/HostX64/x64/../../../../../../../VC/Auxiliary/Build/vcvars64.bat'
+
+
+Compiling the CUDA compiler identification source file "CMakeCUDACompilerId.cu" failed.
+Compiler: C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.4/bin/nvcc.exe 
+Build flags: 
+Id flags:  -v
+
+The output was:
+1
+
+X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\CMakeFiles\3.20.2\CompilerIdCUDA>call "C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.29.30133/bin/HostX64/x64/../../../../../../../VC/Auxiliary/Build/vcvars64.bat" 
+**********************************************************************
+** Visual Studio 2019 Developer Command Prompt v16.11.5
+** Copyright (c) 2021 Microsoft Corporation
+**********************************************************************
+The input line is too long.
+The syntax of the command is incorrect.
+#$ C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.29.30133/bin/HostX64/x64/../../../../../../../VC/Auxiliary/Build/vcvars64.bat
+nvcc fatal   : Could not set up the environment for Microsoft Visual Studio using 'C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.29.30133/bin/HostX64/x64/../../../../../../../VC/Auxiliary/Build/vcvars64.bat'
+
+
+Checking whether the CUDA compiler is NVIDIA using "" did not match "nvcc: NVIDIA \(R\) Cuda compiler driver":
+nvcc fatal   : No input files specified; use option --help for more information
+Checking whether the CUDA compiler is Clang using "" did not match "(clang version)":
+nvcc fatal   : No input files specified; use option --help for more information
+Checking whether the CUDA compiler is NVIDIA using "" did not match "nvcc: NVIDIA \(R\) Cuda compiler driver":
+nvcc fatal   : No input files specified; use option --help for more information
+Checking whether the CUDA compiler is Clang using "" did not match "(clang version)":
+nvcc fatal   : No input files specified; use option --help for more information
+Determining if the include file pthread.h exists failed with the following output:
+Change Dir: X:/Projects/TitanPlusPlus/cmake-build-debug-visual-studio/CMakeFiles/CMakeTmp
+
+Run Build Command(s):nmake -f Makefile /nologo cmTC_af8a1\fast && 	"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\bin\HostX64\x64\nmake.exe"  -f CMakeFiles\cmTC_af8a1.dir\build.make /nologo -L                  CMakeFiles\cmTC_af8a1.dir\build
+Building C object CMakeFiles/cmTC_af8a1.dir/CheckIncludeFile.c.obj
+	"C:\Program Files\JetBrains\CLion 2020.1.1\bin\cmake\win\bin\cmake.exe" -E cmake_cl_compile_depends --dep-file=CMakeFiles\cmTC_af8a1.dir\CheckIncludeFile.c.obj.d --working-dir=X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\CMakeFiles\CMakeTmp --filter-prefix="" -- C:\PROGRA~2\MICROS~3\2019\COMMUN~1\VC\Tools\MSVC\1429~1.301\bin\Hostx64\x64\cl.exe @X:\WinTemp\nm374F.tmp
+NMAKE : fatal error U1077: '"C:\Program Files\JetBrains\CLion 2020.1.1\bin\cmake\win\bin\cmake.exe"' : return code '0x2'
+Stop.
+NMAKE : fatal error U1077: '"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\bin\HostX64\x64\nmake.exe"' : return code '0x2'
+Stop.
+
+
+

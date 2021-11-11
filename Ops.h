@@ -29,8 +29,12 @@ struct Op {
         False,          ///< Represents a boolean 'false' value.
         GetGlobal32,    ///< Loads a 32-bit-addressed global onto the stack.
         GetGlobal,      ///< Loads a global onto the stack.
+        GetLocal32,     ///< Loads a 32-bit addressed local variable onto the stack.
+        GetLocal,       ///< Loads a local variable onto the stack.
         Greater,        ///< Tests the top two values of the stack and returns true if the second-most is greater.
         GreaterEqual,   ///< Tests the top two values of the stack and returns false if the second-most is lesser.
+        JumpIfFalse,    ///< Performs a jump if condition evaluates to false.
+        Jump,           ///< Performs a jump.
         Less,           ///< Tests the top two values of the stack and returns true if the second-most is lesser.
         LessEqual,      ///< Tests the top two values of the stack and returns false if the second-most is greater.
         Multiply,       ///< Multiplies and pops the two values at the back of the stack, then pushes the result.
@@ -39,8 +43,13 @@ struct Op {
         NotEqual,       ///< Tests if the topmost two values on the stack are inequal.
         Null,           ///< Represents a null value.
         Pop,            ///< Pops the top value from the stack.
+        PopN,           ///< Pop the top N values from the stack.
         Print,          ///< Prints and pops a value from the stack.
         Return,         ///< Exit from VM processing cycle.
+        SetGlobal32,    ///< Set the value of a 32-bit addressed variable.
+        SetGlobal,      ///< Set the value of a global.
+        SetLocal32,     ///< Set the value of a 32-bit addressed local variable.
+        SetLocal,       ///< Set the value of a local variable.
         Subtract,       ///< Subtracts and pops the two values at the back of the stack, then pushes the result.
         True,           ///< Represents a boolean 'true' value.
     };

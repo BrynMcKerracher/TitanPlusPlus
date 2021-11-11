@@ -52,7 +52,7 @@ VM::InterpretResult VM::run(Batch &batch) {
                     stack.push_back(Value::fromMatrixD(operands[1].toType<MatrixD>() + operands[0].toType<MatrixD>()));
                 }
                 else {
-                    runtimeError("Operands must be two numbers or two strings.", batch);
+                    runtimeError("Operands must be two numbers, matrices, or strings.", batch);
                     return InterpretResult::RUNTIME_ERROR;
                 }
                 break;
@@ -130,6 +130,16 @@ VM::InterpretResult VM::run(Batch &batch) {
                 }
                 break;
             }
+            case Op::Code::GetLocal32: {
+                Op::Code firstHalf = *pc++;
+                Op::Code secondHalf = *pc++;
+                stack.push_back(stack[Memory::toValue<size_t>(firstHalf, secondHalf)]);
+                break;
+            }
+            case Op::Code::GetLocal: {
+                stack.push_back(stack[*pc++]);
+                break;
+            }
             case Op::Code::Greater: {
                 if (checkBinaryOperandsHaveType(Value::Type::NUMBER)) {
                     Value b = popValue();
@@ -152,6 +162,16 @@ VM::InterpretResult VM::run(Batch &batch) {
                     runtimeError("Operands must be numbers.", batch);
                     return InterpretResult::RUNTIME_ERROR;
                 }
+                break;
+            }
+            case Op::Code::JumpIfFalse: {
+                Op::Code offset = *pc++;
+                if (isFalsey(stack.back())) pc += offset;
+                break;
+            }
+            case Op::Code::Jump: {
+                Op::Code offset = *pc++;
+                pc += offset;
                 break;
             }
             case Op::Code::Less: {
@@ -215,6 +235,10 @@ VM::InterpretResult VM::run(Batch &batch) {
                 stack.pop_back();
                 break;
             }
+            case Op::Code::PopN: {
+                stack.resize(stack.size() - *pc++);
+                break;
+            }
             case Op::Code::Print: {
                 std::cout << stack.back().toString() << "\n";
                 stack.pop_back();
@@ -222,6 +246,40 @@ VM::InterpretResult VM::run(Batch &batch) {
             }
             case Op::Code::Return: {
                 return InterpretResult::OK;
+            }
+            case Op::Code::SetGlobal32: {
+                Op::Code firstHalf = *pc++;
+                Op::Code secondHalf = *pc++;
+                Value globalVarName = batch.constantPool[Memory::toValue<size_t>(firstHalf, secondHalf)];
+                try {
+                    globals.at(globalVarName.toString()) = stack.back();
+                }
+                catch (const std::out_of_range& exception) {
+                    runtimeError("Undefined variable '" + globalVarName.toString() + "'", batch);
+                    return InterpretResult::RUNTIME_ERROR;
+                }
+                break;
+            }
+            case Op::Code::SetGlobal: {
+                Value globalVarName = batch.constantPool[*pc++];
+                try {
+                    globals.at(globalVarName.toString()) = stack.back();
+                }
+                catch (const std::out_of_range& exception) {
+                    runtimeError("Undefined variable '" + globalVarName.toString() + "'", batch);
+                    return InterpretResult::RUNTIME_ERROR;
+                }
+                break;
+            }
+            case Op::Code::SetLocal32: {
+                Op::Code firstHalf = *pc++;
+                Op::Code secondHalf = *pc++;
+                stack[Memory::toValue<size_t>(firstHalf, secondHalf)] = stack.back();
+                break;
+            }
+            case Op::Code::SetLocal: {
+                stack[*pc++] = stack.back();
+                break;
             }
             case Op::Code::Subtract: {
                 if (checkBinaryOperandsHaveType(Value::Type::NUMBER)) {

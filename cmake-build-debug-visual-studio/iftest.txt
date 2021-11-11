@@ -1,0 +1,6 @@
+var first = 11;
+var second = 12;
+if (first == second) {
+	print "Test!";
+	print "Test two!";
+}

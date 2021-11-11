@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+X:/Projects/TitanPlusPlus/CudaMath.cu
+CudaMath.h
+X:/Projects/TitanPlusPlus/CudaMath.h
+
+X:/Projects/TitanPlusPlus/CudaMath.h
+utility
+-
+cfloat
+-
+

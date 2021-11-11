@@ -1,0 +1,5 @@
+if(EXISTS "X:/Projects/TitanPlusPlus/cmake-build-debug-visual-studio/MatrixTest[1]_tests.cmake")
+  include("X:/Projects/TitanPlusPlus/cmake-build-debug-visual-studio/MatrixTest[1]_tests.cmake")
+else()
+  add_test(MatrixTest_NOT_BUILT MatrixTest_NOT_BUILT)
+endif()

@@ -19,6 +19,7 @@
 #include "Parser.h"
 #include "Memory.h"
 #include "Debug.h"
+#include "Local.h"
 
 //Enable logging of batch contents.
 #define DEBUG_PRINT_CODE
@@ -73,6 +74,9 @@ protected:
     Parser parser;                           ///< Parses tokens produced by the scanner.
     Batch* currentBatch = nullptr;           ///< Current batch being compiled.
     ParseRule parseRules[Token::Type::SIZE]; ///< List of parsing rules indexed by token type.
+    bool canAssign = true;                   ///< Whether or not the expression being currently evaluated can be assigned to.
+    std::vector<Local> locals;               ///< Array of all local variables, assigned at compile-time.
+    std::size_t scopeDepth = 0;              ///< Depth of the current scope during compilation.
 
     /**
      * @brief Returns a pointer to the parsing rule associated with the given token type.
@@ -114,9 +118,27 @@ protected:
     void emitOps(Op::Code a, Op::Code b);
 
     /**
+     * @brief Emits a jump instruction.
+     * @param jumpOp The jump operation to emit.
+     * @return The index of the first operand of the jump instruction, for use in back-patching.
+     */
+    Op::Code emitJump(Op::Code jumpOp);
+
+    /**
+     * @brief Back-patches the destination of a jump operation into the bytecode.
+     * @param offset The location of the jump instruction's first operand.
+     */
+    void backPatchJump(Op::Code offset);
+
+    /**
      * @brief Parses the next expression in the source code.
      */
     void expression();
+
+    /**
+     * @brief Parses a block.
+     */
+    void block();
 
     /**
      * @brief Parses a double from the current position in the source code.
@@ -169,6 +191,11 @@ protected:
      void expressionStatement();
 
      /**
+      * @brief Parses an if-statement.
+      */
+     void ifStatement();
+
+     /**
       * @brief Parses a variable declaration.
       */
      void variableDeclaration();
@@ -177,6 +204,13 @@ protected:
       * @brief Parses a variable.
       */
      void variable();
+
+     /**
+      * @brief Returns the index of a local variable with the given name, or -1 if not found.
+      * @param name The token representing the name of the variable.
+      * @return The index of the local variable in the locals array, or -1 if not found.
+      */
+     std::size_t resolveLocalVariable(Token name);
 
      /**
       * @brief Creates a sequence of instructions for loading a named variable.
@@ -210,6 +244,17 @@ protected:
     size_t identifierConstant(const Token& token);
 
     /**
+     * @brief Registers a local variable name in the locals pool at the current scope-depth.
+     * @param name The token containing the name to be registered.
+     */
+    void addLocalVariable(Token name);
+
+    /**
+     * @brief Declares a local variable, which occurs during compile-time.
+     */
+    void declareVariable();
+
+    /**
      * @brief Writes Op::Codes to the current batch to define a global variable, given the index to its name.
      * @param global The index of the global variable's name in the batch's constant pool.
      */
@@ -228,6 +273,16 @@ protected:
      * @return True if the next token matches the given type, otherwise false.
      */
     bool matchType(Token::Type type);
+
+    /**
+     * @brief Increments the scope depth counter.
+     */
+    void beginScope();
+
+    /**
+     * @brief Decrements the scope depth counter.
+     */
+    void endScope();
 };
 
 #endif //TITANPLUSPLUS_COMPILER_H
