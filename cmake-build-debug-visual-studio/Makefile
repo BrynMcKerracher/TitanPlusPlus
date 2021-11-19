@@ -54,16 +54,6 @@ CMAKE_BINARY_DIR = X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio
 #=============================================================================
 # Targets provided globally by CMake.
 
-# Special rule for the target edit_cache
-edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	echo >nul && "C:\Program Files\JetBrains\CLion 2020.1.1\bin\cmake\win\bin\cmake.exe" -E echo "No interactive CMake dialog available."
-.PHONY : edit_cache
-
-# Special rule for the target edit_cache
-edit_cache\fast: edit_cache
-.PHONY : edit_cache\fast
-
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
@@ -83,6 +73,16 @@ test:
 # Special rule for the target test
 test\fast: test
 .PHONY : test\fast
+
+# Special rule for the target edit_cache
+edit_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
+	echo >nul && "C:\Program Files\JetBrains\CLion 2020.1.1\bin\cmake\win\bin\cmake.exe" -E echo "No interactive CMake dialog available."
+.PHONY : edit_cache
+
+# Special rule for the target edit_cache
+edit_cache\fast: edit_cache
+.PHONY : edit_cache\fast
 
 # Special rule for the target list_install_components
 list_install_components:
@@ -187,17 +187,17 @@ TitanPlusPlus\fast:
 .PHONY : TitanPlusPlus\fast
 
 #=============================================================================
-# Target rules for targets named MatrixTest
+# Target rules for targets named TitanEngine
 
 # Build rule for target.
-MatrixTest: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 /nologo -$(MAKEFLAGS) MatrixTest
-.PHONY : MatrixTest
+TitanEngine: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 /nologo -$(MAKEFLAGS) TitanEngine
+.PHONY : TitanEngine
 
 # fast build rule for target.
-MatrixTest\fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\MatrixTest.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\MatrixTest.dir\build
-.PHONY : MatrixTest\fast
+TitanEngine\fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanEngine.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanEngine.dir\build
+.PHONY : TitanEngine\fast
 
 #=============================================================================
 # Target rules for targets named MatrixSpeed
@@ -211,6 +211,19 @@ MatrixSpeed: cmake_check_build_system
 MatrixSpeed\fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\MatrixSpeed.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\MatrixSpeed.dir\build
 .PHONY : MatrixSpeed\fast
+
+#=============================================================================
+# Target rules for targets named TestSuite
+
+# Build rule for target.
+TestSuite: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 /nologo -$(MAKEFLAGS) TestSuite
+.PHONY : TestSuite
+
+# fast build rule for target.
+TestSuite\fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestSuite.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TestSuite.dir\build
+.PHONY : TestSuite\fast
 
 #=============================================================================
 # Target rules for targets named gmock_main
@@ -270,6 +283,7 @@ Batch.obj: Batch.cpp.obj
 # target to build an object file
 Batch.cpp.obj:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanPlusPlus.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanPlusPlus.dir\Batch.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanEngine.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanEngine.dir\Batch.cpp.obj
 .PHONY : Batch.cpp.obj
 
 Batch.i: Batch.cpp.i
@@ -278,6 +292,7 @@ Batch.i: Batch.cpp.i
 # target to preprocess a source file
 Batch.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanPlusPlus.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanPlusPlus.dir\Batch.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanEngine.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanEngine.dir\Batch.cpp.i
 .PHONY : Batch.cpp.i
 
 Batch.s: Batch.cpp.s
@@ -286,6 +301,7 @@ Batch.s: Batch.cpp.s
 # target to generate assembly for a file
 Batch.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanPlusPlus.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanPlusPlus.dir\Batch.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanEngine.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanEngine.dir\Batch.cpp.s
 .PHONY : Batch.cpp.s
 
 Compiler.obj: Compiler.cpp.obj
@@ -294,6 +310,7 @@ Compiler.obj: Compiler.cpp.obj
 # target to build an object file
 Compiler.cpp.obj:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanPlusPlus.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanPlusPlus.dir\Compiler.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanEngine.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanEngine.dir\Compiler.cpp.obj
 .PHONY : Compiler.cpp.obj
 
 Compiler.i: Compiler.cpp.i
@@ -302,6 +319,7 @@ Compiler.i: Compiler.cpp.i
 # target to preprocess a source file
 Compiler.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanPlusPlus.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanPlusPlus.dir\Compiler.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanEngine.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanEngine.dir\Compiler.cpp.i
 .PHONY : Compiler.cpp.i
 
 Compiler.s: Compiler.cpp.s
@@ -310,6 +328,7 @@ Compiler.s: Compiler.cpp.s
 # target to generate assembly for a file
 Compiler.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanPlusPlus.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanPlusPlus.dir\Compiler.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanEngine.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanEngine.dir\Compiler.cpp.s
 .PHONY : Compiler.cpp.s
 
 CudaMath.obj: CudaMath.cu.obj
@@ -345,6 +364,7 @@ Debug.obj: Debug.cpp.obj
 # target to build an object file
 Debug.cpp.obj:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanPlusPlus.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanPlusPlus.dir\Debug.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanEngine.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanEngine.dir\Debug.cpp.obj
 .PHONY : Debug.cpp.obj
 
 Debug.i: Debug.cpp.i
@@ -353,6 +373,7 @@ Debug.i: Debug.cpp.i
 # target to preprocess a source file
 Debug.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanPlusPlus.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanPlusPlus.dir\Debug.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanEngine.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanEngine.dir\Debug.cpp.i
 .PHONY : Debug.cpp.i
 
 Debug.s: Debug.cpp.s
@@ -361,6 +382,7 @@ Debug.s: Debug.cpp.s
 # target to generate assembly for a file
 Debug.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanPlusPlus.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanPlusPlus.dir\Debug.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanEngine.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanEngine.dir\Debug.cpp.s
 .PHONY : Debug.cpp.s
 
 Local.obj: Local.cpp.obj
@@ -369,6 +391,7 @@ Local.obj: Local.cpp.obj
 # target to build an object file
 Local.cpp.obj:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanPlusPlus.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanPlusPlus.dir\Local.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanEngine.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanEngine.dir\Local.cpp.obj
 .PHONY : Local.cpp.obj
 
 Local.i: Local.cpp.i
@@ -377,6 +400,7 @@ Local.i: Local.cpp.i
 # target to preprocess a source file
 Local.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanPlusPlus.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanPlusPlus.dir\Local.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanEngine.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanEngine.dir\Local.cpp.i
 .PHONY : Local.cpp.i
 
 Local.s: Local.cpp.s
@@ -385,31 +409,8 @@ Local.s: Local.cpp.s
 # target to generate assembly for a file
 Local.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanPlusPlus.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanPlusPlus.dir\Local.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanEngine.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanEngine.dir\Local.cpp.s
 .PHONY : Local.cpp.s
-
-Memory.obj: Memory.cpp.obj
-.PHONY : Memory.obj
-
-# target to build an object file
-Memory.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanPlusPlus.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanPlusPlus.dir\Memory.cpp.obj
-.PHONY : Memory.cpp.obj
-
-Memory.i: Memory.cpp.i
-.PHONY : Memory.i
-
-# target to preprocess a source file
-Memory.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanPlusPlus.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanPlusPlus.dir\Memory.cpp.i
-.PHONY : Memory.cpp.i
-
-Memory.s: Memory.cpp.s
-.PHONY : Memory.s
-
-# target to generate assembly for a file
-Memory.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanPlusPlus.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanPlusPlus.dir\Memory.cpp.s
-.PHONY : Memory.cpp.s
 
 Ops.obj: Ops.cpp.obj
 .PHONY : Ops.obj
@@ -417,6 +418,7 @@ Ops.obj: Ops.cpp.obj
 # target to build an object file
 Ops.cpp.obj:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanPlusPlus.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanPlusPlus.dir\Ops.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanEngine.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanEngine.dir\Ops.cpp.obj
 .PHONY : Ops.cpp.obj
 
 Ops.i: Ops.cpp.i
@@ -425,6 +427,7 @@ Ops.i: Ops.cpp.i
 # target to preprocess a source file
 Ops.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanPlusPlus.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanPlusPlus.dir\Ops.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanEngine.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanEngine.dir\Ops.cpp.i
 .PHONY : Ops.cpp.i
 
 Ops.s: Ops.cpp.s
@@ -433,6 +436,7 @@ Ops.s: Ops.cpp.s
 # target to generate assembly for a file
 Ops.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanPlusPlus.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanPlusPlus.dir\Ops.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanEngine.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanEngine.dir\Ops.cpp.s
 .PHONY : Ops.cpp.s
 
 Parser.obj: Parser.cpp.obj
@@ -441,6 +445,7 @@ Parser.obj: Parser.cpp.obj
 # target to build an object file
 Parser.cpp.obj:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanPlusPlus.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanPlusPlus.dir\Parser.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanEngine.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanEngine.dir\Parser.cpp.obj
 .PHONY : Parser.cpp.obj
 
 Parser.i: Parser.cpp.i
@@ -449,6 +454,7 @@ Parser.i: Parser.cpp.i
 # target to preprocess a source file
 Parser.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanPlusPlus.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanPlusPlus.dir\Parser.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanEngine.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanEngine.dir\Parser.cpp.i
 .PHONY : Parser.cpp.i
 
 Parser.s: Parser.cpp.s
@@ -457,6 +463,7 @@ Parser.s: Parser.cpp.s
 # target to generate assembly for a file
 Parser.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanPlusPlus.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanPlusPlus.dir\Parser.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanEngine.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanEngine.dir\Parser.cpp.s
 .PHONY : Parser.cpp.s
 
 Scanner.obj: Scanner.cpp.obj
@@ -465,6 +472,7 @@ Scanner.obj: Scanner.cpp.obj
 # target to build an object file
 Scanner.cpp.obj:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanPlusPlus.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanPlusPlus.dir\Scanner.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanEngine.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanEngine.dir\Scanner.cpp.obj
 .PHONY : Scanner.cpp.obj
 
 Scanner.i: Scanner.cpp.i
@@ -473,6 +481,7 @@ Scanner.i: Scanner.cpp.i
 # target to preprocess a source file
 Scanner.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanPlusPlus.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanPlusPlus.dir\Scanner.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanEngine.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanEngine.dir\Scanner.cpp.i
 .PHONY : Scanner.cpp.i
 
 Scanner.s: Scanner.cpp.s
@@ -481,6 +490,7 @@ Scanner.s: Scanner.cpp.s
 # target to generate assembly for a file
 Scanner.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanPlusPlus.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanPlusPlus.dir\Scanner.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanEngine.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanEngine.dir\Scanner.cpp.s
 .PHONY : Scanner.cpp.s
 
 Token.obj: Token.cpp.obj
@@ -489,6 +499,7 @@ Token.obj: Token.cpp.obj
 # target to build an object file
 Token.cpp.obj:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanPlusPlus.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanPlusPlus.dir\Token.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanEngine.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanEngine.dir\Token.cpp.obj
 .PHONY : Token.cpp.obj
 
 Token.i: Token.cpp.i
@@ -497,6 +508,7 @@ Token.i: Token.cpp.i
 # target to preprocess a source file
 Token.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanPlusPlus.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanPlusPlus.dir\Token.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanEngine.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanEngine.dir\Token.cpp.i
 .PHONY : Token.cpp.i
 
 Token.s: Token.cpp.s
@@ -505,6 +517,7 @@ Token.s: Token.cpp.s
 # target to generate assembly for a file
 Token.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanPlusPlus.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanPlusPlus.dir\Token.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanEngine.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanEngine.dir\Token.cpp.s
 .PHONY : Token.cpp.s
 
 VM.obj: VM.cpp.obj
@@ -513,6 +526,7 @@ VM.obj: VM.cpp.obj
 # target to build an object file
 VM.cpp.obj:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanPlusPlus.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanPlusPlus.dir\VM.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanEngine.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanEngine.dir\VM.cpp.obj
 .PHONY : VM.cpp.obj
 
 VM.i: VM.cpp.i
@@ -521,6 +535,7 @@ VM.i: VM.cpp.i
 # target to preprocess a source file
 VM.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanPlusPlus.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanPlusPlus.dir\VM.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanEngine.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanEngine.dir\VM.cpp.i
 .PHONY : VM.cpp.i
 
 VM.s: VM.cpp.s
@@ -529,6 +544,7 @@ VM.s: VM.cpp.s
 # target to generate assembly for a file
 VM.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanPlusPlus.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanPlusPlus.dir\VM.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanEngine.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanEngine.dir\VM.cpp.s
 .PHONY : VM.cpp.s
 
 Value.obj: Value.cpp.obj
@@ -537,6 +553,7 @@ Value.obj: Value.cpp.obj
 # target to build an object file
 Value.cpp.obj:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanPlusPlus.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanPlusPlus.dir\Value.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanEngine.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanEngine.dir\Value.cpp.obj
 .PHONY : Value.cpp.obj
 
 Value.i: Value.cpp.i
@@ -545,6 +562,7 @@ Value.i: Value.cpp.i
 # target to preprocess a source file
 Value.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanPlusPlus.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanPlusPlus.dir\Value.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanEngine.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanEngine.dir\Value.cpp.i
 .PHONY : Value.cpp.i
 
 Value.s: Value.cpp.s
@@ -553,6 +571,7 @@ Value.s: Value.cpp.s
 # target to generate assembly for a file
 Value.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanPlusPlus.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanPlusPlus.dir\Value.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TitanEngine.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TitanEngine.dir\Value.cpp.s
 .PHONY : Value.cpp.s
 
 main.obj: main.cpp.obj
@@ -584,7 +603,7 @@ testing\matrix\MatrixTesting.obj: testing\matrix\MatrixTesting.cpp.obj
 
 # target to build an object file
 testing\matrix\MatrixTesting.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\MatrixTest.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\MatrixTest.dir\testing\matrix\MatrixTesting.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestSuite.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TestSuite.dir\testing\matrix\MatrixTesting.cpp.obj
 .PHONY : testing\matrix\MatrixTesting.cpp.obj
 
 testing\matrix\MatrixTesting.i: testing\matrix\MatrixTesting.cpp.i
@@ -592,7 +611,7 @@ testing\matrix\MatrixTesting.i: testing\matrix\MatrixTesting.cpp.i
 
 # target to preprocess a source file
 testing\matrix\MatrixTesting.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\MatrixTest.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\MatrixTest.dir\testing\matrix\MatrixTesting.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestSuite.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TestSuite.dir\testing\matrix\MatrixTesting.cpp.i
 .PHONY : testing\matrix\MatrixTesting.cpp.i
 
 testing\matrix\MatrixTesting.s: testing\matrix\MatrixTesting.cpp.s
@@ -600,7 +619,7 @@ testing\matrix\MatrixTesting.s: testing\matrix\MatrixTesting.cpp.s
 
 # target to generate assembly for a file
 testing\matrix\MatrixTesting.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\MatrixTest.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\MatrixTest.dir\testing\matrix\MatrixTesting.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestSuite.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TestSuite.dir\testing\matrix\MatrixTesting.cpp.s
 .PHONY : testing\matrix\MatrixTesting.cpp.s
 
 testing\speed\main.obj: testing\speed\main.cpp.obj
@@ -627,6 +646,30 @@ testing\speed\main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\MatrixSpeed.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\MatrixSpeed.dir\testing\speed\main.cpp.s
 .PHONY : testing\speed\main.cpp.s
 
+testing\variable\VariableTest.obj: testing\variable\VariableTest.cpp.obj
+.PHONY : testing\variable\VariableTest.obj
+
+# target to build an object file
+testing\variable\VariableTest.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestSuite.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TestSuite.dir\testing\variable\VariableTest.cpp.obj
+.PHONY : testing\variable\VariableTest.cpp.obj
+
+testing\variable\VariableTest.i: testing\variable\VariableTest.cpp.i
+.PHONY : testing\variable\VariableTest.i
+
+# target to preprocess a source file
+testing\variable\VariableTest.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestSuite.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TestSuite.dir\testing\variable\VariableTest.cpp.i
+.PHONY : testing\variable\VariableTest.cpp.i
+
+testing\variable\VariableTest.s: testing\variable\VariableTest.cpp.s
+.PHONY : testing\variable\VariableTest.s
+
+# target to generate assembly for a file
+testing\variable\VariableTest.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestSuite.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\TestSuite.dir\testing\variable\VariableTest.cpp.s
+.PHONY : testing\variable\VariableTest.cpp.s
+
 # Help Target
 help:
 	@echo The following are some of the valid targets for this Makefile:
@@ -641,8 +684,9 @@ help:
 	@echo ... rebuild_cache
 	@echo ... test
 	@echo ... MatrixSpeed
-	@echo ... MatrixTest
+	@echo ... TestSuite
 	@echo ... TitanCUDA
+	@echo ... TitanEngine
 	@echo ... TitanPlusPlus
 	@echo ... gmock
 	@echo ... gmock_main
@@ -663,9 +707,6 @@ help:
 	@echo ... Local.obj
 	@echo ... Local.i
 	@echo ... Local.s
-	@echo ... Memory.obj
-	@echo ... Memory.i
-	@echo ... Memory.s
 	@echo ... Ops.obj
 	@echo ... Ops.i
 	@echo ... Ops.s
@@ -693,6 +734,9 @@ help:
 	@echo ... testing/speed/main.obj
 	@echo ... testing/speed/main.i
 	@echo ... testing/speed/main.s
+	@echo ... testing/variable/VariableTest.obj
+	@echo ... testing/variable/VariableTest.i
+	@echo ... testing/variable/VariableTest.s
 .PHONY : help
 
 

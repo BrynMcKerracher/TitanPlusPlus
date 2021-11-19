@@ -11,7 +11,6 @@
 #include <iostream> //For std::cout
 #include "Ops.h"
 #include "Batch.h"
-#include "Memory.h"
 
 /**
  * @class Debug

@@ -21,7 +21,3 @@ Token::Token(Token::Type tokenType, size_t index, size_t tokenLength, int tokenL
     length = tokenLength;
     line = tokenLine;
 }
-
-bool Token::operator==(const Token &rhs) const {
-    return start == rhs.start and length == rhs.length;
-}

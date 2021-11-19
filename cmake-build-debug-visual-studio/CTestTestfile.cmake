@@ -4,5 +4,5 @@
 # 
 # This file includes the relevant testing commands required for 
 # testing this directory and lists subdirectories to be tested as well.
-include("X:/Projects/TitanPlusPlus/cmake-build-debug-visual-studio/MatrixTest[1]_include.cmake")
+include("X:/Projects/TitanPlusPlus/cmake-build-debug-visual-studio/TestSuite[1]_include.cmake")
 subdirs("_deps/googletest-build")

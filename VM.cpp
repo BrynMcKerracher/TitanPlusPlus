@@ -1,7 +1,7 @@
 #include "VM.h"
 
 VM::VM() {
-    stack.reserve(MaxStackSize);
+    stack.reserve(InitialStackReserveSize);
 }
 
 VM::InterpretResult VM::interpret(const std::string &titanCode) {
@@ -35,19 +35,19 @@ VM::InterpretResult VM::run(Batch &batch) {
         //Op::Code dispatch
         switch (*pc++) {
             case Op::Code::Add: {
-                if (checkBinaryOperandsHaveType(Value::Type::NUMBER)) {
+                if (doBinaryOperandsHaveType(Value::Type::NUMBER)) {
                     const auto operands = popBinaryOperands();
                     stack.push_back(Value::fromNumber(operands[1].toType<double>() + operands[0].toType<double>()));
                 }
-                else if (checkBinaryOperandsHaveType(Value::Type::STRING)) {
+                else if (doBinaryOperandsHaveType(Value::Type::STRING)) {
                     const auto operands = popBinaryOperands();
                     stack.push_back(Value::fromString(operands[1].toType<std::string>() + operands[0].toType<std::string>()));
                 }
-                else if (checkBinaryOperandsHaveType(Value::Type::MATRIXF)) {
+                else if (doBinaryOperandsHaveType(Value::Type::MATRIXF)) {
                     const auto operands = popBinaryOperands();
                     stack.push_back(Value::fromMatrixF(operands[1].toType<MatrixF>() + operands[0].toType<MatrixF>()));
                 }
-                else if (checkBinaryOperandsHaveType(Value::Type::MATRIXD)) {
+                else if (doBinaryOperandsHaveType(Value::Type::MATRIXD)) {
                     const auto operands = popBinaryOperands();
                     stack.push_back(Value::fromMatrixD(operands[1].toType<MatrixD>() + operands[0].toType<MatrixD>()));
                 }
@@ -57,34 +57,44 @@ VM::InterpretResult VM::run(Batch &batch) {
                 }
                 break;
             }
+            case Op::Code::Constant64: {
+                Value constant = batch.constantPool[read64()];
+                stack.push_back(constant);
+                break;
+            }
             case Op::Code::Constant32: {
-                Op::Code firstHalf = *pc++;
-                Op::Code secondHalf = *pc++;
-                Value constant = batch.constantPool[Memory::toValue<size_t>(firstHalf, secondHalf)];
+                Value constant = batch.constantPool[read32()];
                 stack.push_back(constant);
                 break;
             }
             case Op::Code::Constant: {
-                Value constant = batch.constantPool[*pc++];
+                Value constant = batch.constantPool[read16()];
                 stack.push_back(constant);
                 break;
             }
-            case Op::Code::DefineGlobal32: {
-                Op::Code firstHalf = *pc++;
-                Op::Code secondHalf = *pc++;
-                Value globalVarName = batch.constantPool[Memory::toValue<size_t>(firstHalf, secondHalf)];
+            case Op::Code::DefineGlobal64: {
+                Value globalVarName = batch.constantPool[read64()];
                 globals[globalVarName.toString()] = stack.back();
+                stack.pop_back();
+                stack.pop_back();
+                break;
+            }
+            case Op::Code::DefineGlobal32: {
+                Value globalVarName = batch.constantPool[read32()];
+                globals[globalVarName.toString()] = stack.back();
+                stack.pop_back();
                 stack.pop_back();
                 break;
             }
             case Op::Code::DefineGlobal: {
-                Value globalVarName = batch.constantPool[*pc++];
+                Value globalVarName = batch.constantPool[read16()];
                 globals[globalVarName.toString()] = stack.back();
+                stack.pop_back();
                 stack.pop_back();
                 break;
             }
             case Op::Code::Divide: {
-                if (checkBinaryOperandsHaveType(Value::Type::NUMBER)) {
+                if (doBinaryOperandsHaveType(Value::Type::NUMBER)) {
                     const auto operands = popBinaryOperands();
                     stack.push_back(Value::fromNumber(operands[1].toType<double>() / operands[0].toType<double>()));
                 }
@@ -104,10 +114,20 @@ VM::InterpretResult VM::run(Batch &batch) {
                 stack.push_back(Value::fromBool(false));
                 break;
             }
+            case Op::Code::GetGlobal64: {
+                Value globalVarName = batch.constantPool[read64()];
+                stack.pop_back();
+                try {
+                    stack.push_back(globals.at(globalVarName.toString()));
+                }
+                catch (const std::out_of_range& exception) {
+                    runtimeError("Undefined variable '" + globalVarName.toString() + "'", batch);
+                    return InterpretResult::RUNTIME_ERROR;
+                }
+                break;
+            }
             case Op::Code::GetGlobal32: {
-                Op::Code firstHalf = *pc++;
-                Op::Code secondHalf = *pc++;
-                Value globalVarName = batch.constantPool[Memory::toValue<size_t>(firstHalf, secondHalf)];
+                Value globalVarName = batch.constantPool[read32()];
                 stack.pop_back();
                 try {
                     stack.push_back(globals.at(globalVarName.toString()));
@@ -119,7 +139,7 @@ VM::InterpretResult VM::run(Batch &batch) {
                 break;
             }
             case Op::Code::GetGlobal: {
-                Value globalVarName = batch.constantPool[*pc++];
+                Value globalVarName = batch.constantPool[read16()];
                 stack.pop_back();
                 try {
                     stack.push_back(globals.at(globalVarName.toString()));
@@ -130,18 +150,20 @@ VM::InterpretResult VM::run(Batch &batch) {
                 }
                 break;
             }
+            case Op::Code::GetLocal64: {
+                stack.push_back(stack[read64()]);
+                break;
+            }
             case Op::Code::GetLocal32: {
-                Op::Code firstHalf = *pc++;
-                Op::Code secondHalf = *pc++;
-                stack.push_back(stack[Memory::toValue<size_t>(firstHalf, secondHalf)]);
+                stack.push_back(stack[read32()]);
                 break;
             }
             case Op::Code::GetLocal: {
-                stack.push_back(stack[*pc++]);
+                stack.push_back(stack[read16()]);
                 break;
             }
             case Op::Code::Greater: {
-                if (checkBinaryOperandsHaveType(Value::Type::NUMBER)) {
+                if (doBinaryOperandsHaveType(Value::Type::NUMBER)) {
                     Value b = popValue();
                     Value a = popValue();
                     stack.push_back(Value::fromBool(a.toType<double>() > b.toType<double>()));
@@ -153,7 +175,7 @@ VM::InterpretResult VM::run(Batch &batch) {
                 break;
             }
             case Op::Code::GreaterEqual: {
-                if (checkBinaryOperandsHaveType(Value::Type::NUMBER)) {
+                if (doBinaryOperandsHaveType(Value::Type::NUMBER)) {
                     Value b = popValue();
                     Value a = popValue();
                     stack.push_back(Value::fromBool(a.toType<double>() >= b.toType<double>()));
@@ -164,18 +186,29 @@ VM::InterpretResult VM::run(Batch &batch) {
                 }
                 break;
             }
-            case Op::Code::JumpIfFalse: {
-                Op::Code offset = *pc++;
-                if (isFalsey(stack.back())) pc += offset;
-                break;
-            }
             case Op::Code::Jump: {
                 Op::Code offset = *pc++;
                 pc += offset;
                 break;
             }
+            case Op::Code::JumpBack: {
+                Op::Code offset = *pc++;
+                pc -= offset;
+                break;
+            }
+            case Op::Code::JumpIfFalse: {
+                Op::Code offset = *pc++;
+                if (isFalsey(stack.back())) pc += offset;
+                break;
+            }
+            case Op::Code::JumpIfFalsePop: {
+                Op::Code offset = *pc++;
+                if (isFalsey(stack.back())) pc += offset;
+                stack.pop_back();
+                break;
+            }
             case Op::Code::Less: {
-                if (checkBinaryOperandsHaveType(Value::Type::NUMBER)) {
+                if (doBinaryOperandsHaveType(Value::Type::NUMBER)) {
                     Value b = popValue();
                     Value a = popValue();
                     stack.push_back(Value::fromBool(a.toType<double>() < b.toType<double>()));
@@ -187,7 +220,7 @@ VM::InterpretResult VM::run(Batch &batch) {
                 break;
             }
             case Op::Code::LessEqual: {
-                if (checkBinaryOperandsHaveType(Value::Type::NUMBER)) {
+                if (doBinaryOperandsHaveType(Value::Type::NUMBER)) {
                     Value b = popValue();
                     Value a = popValue();
                     stack.push_back(Value::fromBool(a.toType<double>() <= b.toType<double>()));
@@ -199,7 +232,7 @@ VM::InterpretResult VM::run(Batch &batch) {
                 break;
             }
             case Op::Code::Multiply: {
-                if (checkBinaryOperandsHaveType(Value::Type::NUMBER)) {
+                if (doBinaryOperandsHaveType(Value::Type::NUMBER)) {
                     const auto operands = popBinaryOperands();
                     stack.push_back(Value::fromNumber(operands[1].toType<double>() * operands[0].toType<double>()));
                 }
@@ -247,10 +280,8 @@ VM::InterpretResult VM::run(Batch &batch) {
             case Op::Code::Return: {
                 return InterpretResult::OK;
             }
-            case Op::Code::SetGlobal32: {
-                Op::Code firstHalf = *pc++;
-                Op::Code secondHalf = *pc++;
-                Value globalVarName = batch.constantPool[Memory::toValue<size_t>(firstHalf, secondHalf)];
+            case Op::Code::SetGlobal64: {
+                Value globalVarName = batch.constantPool[read64()];
                 try {
                     globals.at(globalVarName.toString()) = stack.back();
                 }
@@ -258,10 +289,23 @@ VM::InterpretResult VM::run(Batch &batch) {
                     runtimeError("Undefined variable '" + globalVarName.toString() + "'", batch);
                     return InterpretResult::RUNTIME_ERROR;
                 }
+                stack.pop_back();
+                break;
+            }
+            case Op::Code::SetGlobal32: {
+                Value globalVarName = batch.constantPool[read32()];
+                try {
+                    globals.at(globalVarName.toString()) = stack.back();
+                }
+                catch (const std::out_of_range& exception) {
+                    runtimeError("Undefined variable '" + globalVarName.toString() + "'", batch);
+                    return InterpretResult::RUNTIME_ERROR;
+                }
+                stack.pop_back();
                 break;
             }
             case Op::Code::SetGlobal: {
-                Value globalVarName = batch.constantPool[*pc++];
+                Value globalVarName = batch.constantPool[read16()];
                 try {
                     globals.at(globalVarName.toString()) = stack.back();
                 }
@@ -269,25 +313,36 @@ VM::InterpretResult VM::run(Batch &batch) {
                     runtimeError("Undefined variable '" + globalVarName.toString() + "'", batch);
                     return InterpretResult::RUNTIME_ERROR;
                 }
+                stack.pop_back();
+                break;
+            }
+            case Op::Code::SetLocal64: {
+                stack[read64()] = stack.back();
                 break;
             }
             case Op::Code::SetLocal32: {
-                Op::Code firstHalf = *pc++;
-                Op::Code secondHalf = *pc++;
-                stack[Memory::toValue<size_t>(firstHalf, secondHalf)] = stack.back();
+                stack[read32()] = stack.back();
                 break;
             }
             case Op::Code::SetLocal: {
-                stack[*pc++] = stack.back();
+                stack[read16()] = stack.back();
                 break;
             }
             case Op::Code::Subtract: {
-                if (checkBinaryOperandsHaveType(Value::Type::NUMBER)) {
+                if (doBinaryOperandsHaveType(Value::Type::NUMBER)) {
                     const auto operands = popBinaryOperands();
                     stack.push_back(Value::fromNumber(operands[1].toType<double>() - operands[0].toType<double>()));
                 }
+                else if (doBinaryOperandsHaveType(Value::Type::MATRIXF)) {
+                    const auto operands = popBinaryOperands();
+                    stack.push_back(Value::fromMatrixF(operands[1].toType<MatrixF>() - operands[0].toType<MatrixF>()));
+                }
+                else if (doBinaryOperandsHaveType(Value::Type::MATRIXD)) {
+                    const auto operands = popBinaryOperands();
+                    stack.push_back(Value::fromMatrixD(operands[1].toType<MatrixD>() - operands[0].toType<MatrixD>()));
+                }
                 else {
-                    runtimeError("Operands must be numbers.", batch);
+                    runtimeError("Operands must be two numbers or two matrices.", batch);
                     return InterpretResult::RUNTIME_ERROR;
                 }
                 break;
@@ -324,6 +379,36 @@ bool VM::isFalsey(const Value &value) {
     return value.type == Value::Type::NIL || (value.type == Value::Type::BOOL && !value.toType<bool>());
 }
 
-bool VM::checkBinaryOperandsHaveType(Value::Type type) const {
+bool VM::doBinaryOperandsHaveType(Value::Type type) const {
     return stack.size() > 1 && stack.back().type == type && stack[stack.size() - 2].type == type;
+}
+
+uint16_t VM::read16() {
+    uint16_t sum = *(uint16_t*)pc;
+    move16();
+    return sum;
+}
+
+uint32_t VM::read32() {
+    uint32_t sum = *(uint32_t*)pc;
+    move32();
+    return sum;
+}
+
+uint64_t VM::read64() {
+    uint64_t sum = *(uint64_t*)pc;
+    move64();
+    return sum;
+}
+
+void VM::move16() {
+    pc += 2 / sizeof(Op::Code);
+}
+
+void VM::move32() {
+    pc += 4 / sizeof(Op::Code);
+}
+
+void VM::move64() {
+    pc += 8 / sizeof(Op::Code);
 }

@@ -463,8 +463,6 @@ Scanner.h
 X:/Projects/TitanPlusPlus/Scanner.h
 Parser.h
 X:/Projects/TitanPlusPlus/Parser.h
-Memory.h
-X:/Projects/TitanPlusPlus/Memory.h
 Debug.h
 X:/Projects/TitanPlusPlus/Debug.h
 Local.h
@@ -483,8 +481,6 @@ Ops.h
 X:/Projects/TitanPlusPlus/Ops.h
 Batch.h
 X:/Projects/TitanPlusPlus/Batch.h
-Memory.h
-X:/Projects/TitanPlusPlus/Memory.h
 
 X:/Projects/TitanPlusPlus/Local.h
 Token.h
@@ -508,20 +504,6 @@ X:/Projects/TitanPlusPlus/Matrix.tpp
 Matrix.h
 X:/Projects/TitanPlusPlus/Matrix.h
 
-X:/Projects/TitanPlusPlus/Memory.h
-vector
--
-iostream
--
-Ops.h
-X:/Projects/TitanPlusPlus/Ops.h
-Memory.tpp
-X:/Projects/TitanPlusPlus/Memory.tpp
-
-X:/Projects/TitanPlusPlus/Memory.tpp
-Memory.h
-X:/Projects/TitanPlusPlus/Memory.h
-
 X:/Projects/TitanPlusPlus/Ops.h
 string
 -
@@ -542,6 +524,26 @@ cstdint
 string
 -
 
+X:/Projects/TitanPlusPlus/VM.cpp
+VM.h
+X:/Projects/TitanPlusPlus/VM.h
+
+X:/Projects/TitanPlusPlus/VM.h
+unordered_set
+-
+iostream
+-
+Batch.h
+X:/Projects/TitanPlusPlus/Batch.h
+Ops.h
+X:/Projects/TitanPlusPlus/Ops.h
+Debug.h
+X:/Projects/TitanPlusPlus/Debug.h
+Compiler.h
+X:/Projects/TitanPlusPlus/Compiler.h
+Value.h
+X:/Projects/TitanPlusPlus/Value.h
+
 X:/Projects/TitanPlusPlus/Value.h
 string
 -
@@ -561,4 +563,24 @@ X:/Projects/TitanPlusPlus/Value.h
 X:/Projects/TitanPlusPlus/common.h
 cstdint
 -
+
+X:/Projects/TitanPlusPlus/main.cpp
+iostream
+-
+fstream
+-
+sstream
+-
+vector
+-
+Batch.h
+X:/Projects/TitanPlusPlus/Batch.h
+Ops.h
+X:/Projects/TitanPlusPlus/Ops.h
+Debug.h
+X:/Projects/TitanPlusPlus/Debug.h
+Memory.h
+X:/Projects/TitanPlusPlus/Memory.h
+VM.h
+X:/Projects/TitanPlusPlus/VM.h
 

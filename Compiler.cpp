@@ -24,7 +24,7 @@ Compiler::Compiler() {
     parseRules[Token::Type::STRING]        = {[this] { string(); },     nullptr,   Precedence::NONE};
     parseRules[Token::Type::NUMBER]        = {[this] { number(); },      nullptr,   Precedence::NONE};
     parseRules[Token::Type::MATRIX]        = {[this] { matrix(); },     nullptr,   Precedence::NONE};
-    parseRules[Token::Type::AND]           = {nullptr,     nullptr,   Precedence::NONE};
+    parseRules[Token::Type::AND]           = {nullptr,     [this] { logicalAnd(); },   Precedence::AND};
     parseRules[Token::Type::CLASS]         = {nullptr,     nullptr,   Precedence::NONE};
     parseRules[Token::Type::ELSE]          = {nullptr,     nullptr,   Precedence::NONE};
     parseRules[Token::Type::FALSE]         = {[this] { literal(); },     nullptr,   Precedence::NONE};
@@ -32,7 +32,7 @@ Compiler::Compiler() {
     parseRules[Token::Type::FUN]           = {nullptr,     nullptr,   Precedence::NONE};
     parseRules[Token::Type::IF]            = {nullptr,     nullptr,   Precedence::NONE};
     parseRules[Token::Type::NIL]           = {[this] { literal(); },     nullptr,   Precedence::NONE};
-    parseRules[Token::Type::OR]            = {nullptr,     nullptr,   Precedence::NONE};
+    parseRules[Token::Type::OR]            = {nullptr,     [this] { logicalOr(); },   Precedence::OR};
     parseRules[Token::Type::PRINT]         = {nullptr,     nullptr,   Precedence::NONE};
     parseRules[Token::Type::RETURN]        = {nullptr,     nullptr,   Precedence::NONE};
     parseRules[Token::Type::SUPER]         = {nullptr,     nullptr,   Precedence::NONE};
@@ -118,6 +118,28 @@ Op::Code Compiler::emitJump(Op::Code jumpOp) {
     return (Op::Code)(currentBatch->opcodes.size() - 1);
 }
 
+void Compiler::emitLoop(Op::Code jumpPosition) {
+    emitOp(Op::Code::JumpBack);
+
+    size_t offset = currentBatch->opcodes.size() - jumpPosition + 1;
+    emitOp((Op::Code)offset);
+}
+
+void Compiler::emitPop(size_t numPops) {
+    if (numPops == 0) return;
+    if (numPops == 1) {
+        emitOp(Op::Code::Pop);
+        return;
+    }
+    if (numPops == 2) {
+        emitOp(Op::Code::Pop);
+        emitOp(Op::Code::Pop);
+        return;
+    }
+    emitOp(Op::Code::PopN);
+    emitOp((Op::Code)numPops);
+}
+
 void Compiler::backPatchJump(Op::Code offset) {
     if (currentBatch->opcodes.size() - offset - 1 >= (Op::Code)-1) {
         error(parser.current, "Jump back-patch overflow: Operand is too large for a single jump instruction.");
@@ -194,7 +216,6 @@ void Compiler::string() {
 }
 
 void Compiler::matrix() {
-   // std::cout << "Matrix: '" << titanSourceCode.substr(parser.previous.start + 1, parser.previous.length - 1) << "'\n";
     emitConstant(Value::fromMatrixD(MatrixD(titanSourceCode.substr(parser.previous.start + 1, parser.previous.length - 2))));
 }
 
@@ -219,6 +240,12 @@ void Compiler::statement() {
     }
     else if (matchType(Token::Type::IF)) {
         ifStatement();
+    }
+    else if (matchType(Token::Type::WHILE)) {
+        whileStatement();
+    }
+    else if (matchType(Token::Type::FOR))  {
+        forStatement();
     }
     else if (matchType(Token::Type::LEFT_BRACE)) {
         beginScope();
@@ -246,16 +273,98 @@ void Compiler::ifStatement() {
     emitOp(Op::Code::Pop);
     statement();
 
-    //Op::Code elseJump = emitJump(Op::Code::Jump);
+    Op::Code elseJump = emitJump(Op::Code::Jump);
 
     backPatchJump(ifJump);
     emitOp(Op::Code::Pop);
 
     //Look for 'else'
-   // if (matchType(Token::Type::ELSE)) {
-   //     statement();
-   // }
-  //  backPatchJump(elseJump);
+    if (matchType(Token::Type::ELSE)) {
+        statement();
+    }
+    backPatchJump(elseJump);
+}
+
+void Compiler::whileStatement() {
+    Op::Code loopBegin = (Op::Code)(currentBatch->opcodes.size());
+    consume(Token::Type::LEFT_PAREN, "Expect '(' at start of while loop.");
+    expression();
+    consume(Token::Type::RIGHT_PAREN, "Expect ')' at end of 'while' expression.");
+
+    Op::Code exitJump = emitJump(Op::Code::JumpIfFalse);
+    emitOp(Op::Code::Pop);
+    statement();
+    emitLoop(loopBegin);
+
+    backPatchJump(exitJump);
+    emitOp(Op::Code::Pop);
+}
+
+void Compiler::forStatement() {
+    beginScope();
+    consume(Token::Type::LEFT_PAREN, "Expect '(' at start of 'for' loop.");
+    if (matchType(Token::Type::SEMICOLON)) {
+        //No initialiser
+    }
+    else if (matchType(Token::Type::VAR)) {
+        variableDeclaration();
+    }
+    else {
+        expressionStatement();
+    }
+
+    size_t loopStart = currentBatch->opcodes.size();
+
+    size_t exitJump = 0;
+    bool hasExitCondition = false;
+    if (!matchType(Token::Type::SEMICOLON)) {
+        hasExitCondition = true;
+        expression();
+        consume(Token::Type::SEMICOLON, "Expect second ';' in 'for' loop.");
+
+        exitJump = emitJump(Op::Code::JumpIfFalse);
+        emitOp(Op::Code::Pop);
+    }
+
+    if (!matchType(Token::Type::RIGHT_PAREN)) {
+        size_t bodyJump = emitJump(Op::Jump);
+        size_t incrementStart = currentBatch->opcodes.size();
+        expression();
+        emitOp(Op::Code::Pop);
+        consume(Token::Type::RIGHT_PAREN, "Expect ')' at end of for declaration.");
+
+        emitLoop((Op::Code)loopStart);
+        loopStart = incrementStart;
+        backPatchJump((Op::Code)bodyJump);
+    }
+
+    statement();
+    emitLoop((Op::Code)loopStart);
+
+    if (hasExitCondition) {
+        backPatchJump((Op::Code)exitJump);
+        emitOp(Op::Code::Pop);
+    }
+
+    endScope();
+}
+
+void Compiler::logicalAnd() {
+    Op::Code endJump = emitJump(Op::Code::JumpIfFalse);
+    emitOp(Op::Code::Pop);
+    parsePrecedence(Precedence::AND);
+    backPatchJump(endJump);
+}
+
+void Compiler::logicalOr() {
+    Op::Code elseJump = emitJump(Op::Code::JumpIfFalse);
+    Op::Code endJump = emitJump(Op::Code::Jump);
+
+    backPatchJump(elseJump);
+    emitOp(Op::Code::Pop);
+
+    parsePrecedence(Precedence::OR);
+    backPatchJump(endJump);
 }
 
 void Compiler::variableDeclaration() {
@@ -276,76 +385,53 @@ void Compiler::variable() {
     namedVariable(parser.previous);
 }
 
-std::size_t Compiler::resolveLocalVariable(Token name) {
-    std::cout << "Start...\n";
-    if (locals.empty()) return (std::size_t)-1;
-    for (std::size_t i = locals.size() - 1; i >= 0; --i) {
-        std::cout << "i = " << i << "\n";
-        if (locals[i].name == name) {
-            if (locals[i].scopeDepth == (std::size_t)-1) {
+std::size_t Compiler::resolveLocalVariable(Token name, bool& foundVariable) {
+    for (auto it = locals.rbegin(); it != locals.rend(); ++it) {
+        if (titanSourceCode.substr(it->name.start, it->name.length) == titanSourceCode.substr(name.start, name.length)) {
+            if (it->scopeDepth == (std::size_t) -1) {
                 error(parser.current, "Variable cannot be initialised with itself!");
             }
-            return i;
+            foundVariable = true;
+            return locals.size() - 1 - (it - locals.rbegin());
         }
     }
+    foundVariable = false;
     return (std::size_t)-1;
 }
 
 void Compiler::namedVariable(const Token &token) {
-    Op::Code getOp, setOp, getOp32, setOp32;
-    std::size_t arg = resolveLocalVariable(token);
-    std::cout << "ARG: " << arg << "\n";
-    std::cout << "";
-    if (arg == (std::size_t)-1) {
+    Op::Code getOp, setOp, getOp32, setOp32, getOp64, setOp64;
+    bool foundLocal = false;
+    std::size_t variableIndex = resolveLocalVariable(token, foundLocal);
+    if (foundLocal) {
         getOp   = Op::Code::GetLocal;
         getOp32 = Op::Code::GetLocal32;
+        getOp64 = Op::Code::GetLocal64;
         setOp   = Op::Code::SetLocal;
         setOp32 = Op::Code::SetLocal32;
+        setOp64 = Op::Code::SetLocal64;
     }
     else {
-        arg = identifierConstant(token);
+        variableIndex = identifierConstant(token);
         getOp   = Op::Code::GetGlobal;
         getOp32 = Op::Code::GetGlobal32;
+        getOp64 = Op::Code::GetGlobal64;
         setOp   = Op::Code::SetGlobal;
         setOp32 = Op::Code::SetGlobal32;
+        setOp64 = Op::Code::SetGlobal64;
     }
 
     if (canAssign and matchType(Token::Type::EQUAL)) {
         expression();
-        //Set Global
-        if (arg == (std::size_t)-1) {
-            error(parser.previous, "Error setting global variable: Out of address space.");
-        }
-        else if (arg >= 1 << (sizeof(Op::Code) * 8)) {
-            emitOp(setOp32);
-            auto indexAsOpCodes = Memory::toOpCodes(arg);
-            emitOps(indexAsOpCodes[0], indexAsOpCodes[1]);
-        }
-        else {
-            emitOp(setOp);
-            emitOp((Op::Code)arg);
-        }
+        writeAddress(setOp, setOp32, setOp64, variableIndex, "Error setting variable: Invalid address.");
     }
     else {
-        //Get Global
-        if (arg == (std::size_t)-1) {
-            error(parser.previous, "Error defining global variable: Out of address space.");
-        }
-        else if (arg >= 1 << (sizeof(Op::Code) * 8)) {
-            emitOp(getOp32);
-            auto indexAsOpCodes = Memory::toOpCodes(arg);
-            emitOps(indexAsOpCodes[0], indexAsOpCodes[1]);
-        }
-        else {
-            emitOp(getOp);
-            emitOp((Op::Code)arg);
-        }
+        writeAddress(getOp, getOp32, getOp64, variableIndex, "Error getting variable: Invalid address.");
     }
 }
 
 void Compiler::synchronise() {
     parser.panicMode = false;
-
     while (parser.current.type != Token::Type::END_OF_FILE) {
         if (parser.previous.type == Token::Type::SEMICOLON) return;
         switch (parser.current.type) {
@@ -361,7 +447,6 @@ void Compiler::synchronise() {
 
             default: ; // Do nothing.
         }
-
         advance();
     }
 }
@@ -401,21 +486,20 @@ size_t Compiler::identifierConstant(const Token &token) {
     return emitConstant(Value::fromString(titanSourceCode.substr(token.start, token.length)));
 }
 
-void Compiler::addLocalVariable(Token name) {
+void Compiler::addLocalVariable(Token& name) {
     //Check if we overflow the local variable array.
     if (locals.size() == (std::size_t)-1) {
         error(parser.previous, "Too many local variables in function.");
     }
-    //Check if an identically-named variable exists in the scame scope level.
-    for (std::size_t i = locals.size() - 1; i >= 0; --i) {
-        if (locals[i].scopeDepth != -1 and locals[i].scopeDepth < scopeDepth) {
+    //Check if an identically-named variable exists in the same scope level.
+    for (auto& i : locals) {
+        if (i.scopeDepth != -1 and i.scopeDepth < scopeDepth) {
             break;
         }
-        if (locals[i].name.start == name.start and locals[i].name.length == name.length) {
+        if (titanSourceCode.substr(i.name.start, i.name.length) == titanSourceCode.substr(name.start, name.length)) {
             error(parser.previous, "A variable with name '" + titanSourceCode.substr(name.start, name.length) + "' already exists in the current scope.");
         }
     }
-
     Local local;
     local.name = name;
     local.scopeDepth = scopeDepth;
@@ -424,9 +508,7 @@ void Compiler::addLocalVariable(Token name) {
 
 void Compiler::declareVariable() {
     if (scopeDepth == 0) return; //Scope level 0 is global scope, so return.
-
-    Token* name = &parser.previous;
-    addLocalVariable(*name);
+    addLocalVariable(parser.previous);
 }
 
 void Compiler::defineVariable(size_t global) {
@@ -434,36 +516,13 @@ void Compiler::defineVariable(size_t global) {
         locals.back().scopeDepth = scopeDepth;
         return;
     }
-    if (global == (size_t)-1) {
-        error(parser.previous, "Error defining global variable: Out of 32-bit address space.");
-    }
-    else if (global >= 1 << (sizeof(Op::Code) * 8)) {
-        emitOp(Op::Code::DefineGlobal32);
-        auto indexAsOpCodes = Memory::toOpCodes(global);
-        emitOps(indexAsOpCodes[0], indexAsOpCodes[1]);
-    }
-    else {
-        emitOp(Op::Code::DefineGlobal);
-        emitOp((Op::Code)global);
-    }
+    writeAddress(Op::DefineGlobal, Op::DefineGlobal32, Op::DefineGlobal64, global, "Error defining global: Out of address space.");
 }
 
 size_t Compiler::emitConstant(const Value& value) {
     //Gets the current index in the constant pool.
     size_t constantIndex = currentBatch->addConstant(value);
-    //If the current index won't fit in the address space of a single Op::Code, use a 32-bit address.
-    if (constantIndex == (size_t)-1) {
-        error(parser.previous, "Error adding new constant: Out of 32-bit address space.");
-    }
-    else if (constantIndex >= 1 << (sizeof(Op::Code) * 8)) {
-        emitOp(Op::Code::Constant32);
-        auto indexAsOpCodes = Memory::toOpCodes(constantIndex);
-        emitOps(indexAsOpCodes[0], indexAsOpCodes[1]);
-    }
-    else {
-        emitOp(Op::Code::Constant);
-        emitOp((Op::Code)constantIndex);
-    }
+    writeAddress(Op::Constant, Op::Constant32, Op::Constant64, constantIndex, "Error defining constant: Out of address space.");
     return constantIndex;
 }
 
@@ -485,9 +544,41 @@ void Compiler::endScope() {
     for (; !locals.empty() and locals.back().scopeDepth > scopeDepth; ++popCount) {
         locals.pop_back();
     }
-    emitOps(Op::Code::PopN, (Op::Code)popCount);
+    emitPop(popCount);
 }
 
+void Compiler::writeAddress(Op::Code addr16Op, Op::Code addr32Op, Op::Code addr64Op, size_t addr, const std::string& errorMessage) {
+    if (addr <= UINT16_MAX) {
+        emitOp(addr16Op);
+        writeAddress16(addr);
+    }
+    else if (addr <= UINT32_MAX) {
+        emitOp(addr32Op);
+        writeAddress32(addr);
+    }
+    else if (addr < UINT64_MAX) {
+        emitOp(addr64Op);
+        writeAddress64(addr);
+    }
+    else {
+        error(parser.previous, errorMessage);
+    }
+}
 
+void Compiler::writeAddress16(size_t address) {
+    writeAddressX(address, 2 / sizeof(Op::Code));
+}
 
+void Compiler::writeAddress32(size_t address) {
+    writeAddressX(address, 4 / sizeof(Op::Code));
+}
 
+void Compiler::writeAddress64(size_t address) {
+    writeAddressX(address, 8 / sizeof(Op::Code));
+}
+
+void Compiler::writeAddressX(size_t address, uint_fast8_t numOps) {
+    for (uint_fast8_t i = 0; i < numOps; ++i) {
+        emitOp((Op::Code) (address << (sizeof(Op::Code) * 8 * i)));
+    }
+}

@@ -89,8 +89,9 @@ set(CMAKE_MAKEFILE_PRODUCTS
 set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/TitanCUDA.dir/DependInfo.cmake"
   "CMakeFiles/TitanPlusPlus.dir/DependInfo.cmake"
-  "CMakeFiles/MatrixTest.dir/DependInfo.cmake"
+  "CMakeFiles/TitanEngine.dir/DependInfo.cmake"
   "CMakeFiles/MatrixSpeed.dir/DependInfo.cmake"
+  "CMakeFiles/TestSuite.dir/DependInfo.cmake"
   "_deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/DependInfo.cmake"
   "_deps/googletest-build/googlemock/CMakeFiles/gmock.dir/DependInfo.cmake"
   "_deps/googletest-build/googletest/CMakeFiles/gtest.dir/DependInfo.cmake"

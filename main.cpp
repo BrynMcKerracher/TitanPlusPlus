@@ -34,37 +34,6 @@ static std::string fileToString(const std::string& path) {
 
 int main(int argc, const char** argv) {
     VM vm;
-    /*size_t testSize = 73473457;
-
-    std::cout << Memory::compressOpCodesToValue<size_t>(Memory::splitValueIntoOpCodes(testSize)) << "\n";
-
-    std::cout << "\n" << testSize << "\n";*/
-    /*
-
-    Batch batch;
-
-    //Add constant '1.2'
-    uint16_t index = batch.addConstant(1.2);
-    batch.addOp(Op::Code::Constant, 11);
-    batch.addOps(Memory::toOpCodes(index), 11);
-
-    //Add constant '345'
-    size_t index2 = batch.addConstant(345);
-    batch.addOp(Op::Code::Constant32, 12);
-    batch.addOps(Memory::toOpCodes(index2), 12);
-
-    //Negate stack top
-    batch.addOp(Op::Code::Negate, 12);
-
-    //Add
-    batch.addOp(Op::Code::Add, 12);
-
-    batch.addOp(Op::Code::Return, 12);
-    Debug::disassembleBatch(batch);
-
-    vm.interpret(batch);
-     */
-
     if (argc == 1) {
         repl(vm);
     }
@@ -75,6 +44,5 @@ int main(int argc, const char** argv) {
         std::cout << "Usage: Titan [path]\n";
         return TOO_MANY_ARGS;
     }
-
     return 0;
 }

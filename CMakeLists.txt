@@ -21,9 +21,6 @@ add_executable(TitanPlusPlus
     Ops.h
     Debug.cpp
     Debug.h
-    Memory.cpp
-    Memory.h
-    Memory.tpp
     Value.cpp
     Value.h
     VM.cpp
@@ -58,22 +55,46 @@ FetchContent_MakeAvailable(googletest)
 
 enable_testing()
 
+add_library(TitanEngine STATIC
+        common.h
+        Batch.cpp
+        Batch.h
+        Ops.cpp
+        Ops.h
+        Debug.cpp
+        Debug.h
+        Value.cpp
+        Value.h
+        VM.cpp
+        VM.h
+        Compiler.cpp
+        Compiler.h
+        Scanner.cpp
+        Scanner.h
+        Token.cpp
+        Token.h
+        Parser.cpp
+        Parser.h
+        Value.tpp
+        Matrix.h
+        Matrix.tpp
+        Local.cpp Local.h)
+
+target_include_directories(TitanEngine PUBLIC "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.4/include")
+
 add_executable(
-    MatrixTest
+    TestSuite
     testing/matrix/MatrixTesting.h
     testing/matrix/MatrixTesting.cpp
+    testing/variable/VariableTest.h
+    testing/variable/VariableTest.cpp
 )
 
-target_link_libraries(MatrixTest TitanCUDA)
-target_include_directories(MatrixTest PUBLIC "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.4/include")
-
-target_link_libraries(
-    MatrixTest
-    gtest_main
-)
+target_link_libraries(TestSuite PUBLIC TitanCUDA TitanEngine gtest_main)
+target_include_directories(TestSuite PUBLIC "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.4/include")
 
 include(GoogleTest)
-gtest_discover_tests(MatrixTest)
+gtest_discover_tests(TestSuite)
 
 # CUDA Profiling test suite
 add_executable(MatrixSpeed

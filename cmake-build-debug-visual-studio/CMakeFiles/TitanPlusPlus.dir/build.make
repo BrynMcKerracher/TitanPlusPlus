@@ -112,28 +112,9 @@ CMakeFiles\TitanPlusPlus.dir\Debug.cpp.s: cmake_force
  /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\TitanPlusPlus.dir\Debug.cpp.s /c X:\Projects\TitanPlusPlus\Debug.cpp
 <<
 
-CMakeFiles\TitanPlusPlus.dir\Memory.cpp.obj: CMakeFiles\TitanPlusPlus.dir\flags.make
-CMakeFiles\TitanPlusPlus.dir\Memory.cpp.obj: ..\Memory.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/TitanPlusPlus.dir/Memory.cpp.obj"
-	C:\PROGRA~2\MICROS~3\2019\COMMUN~1\VC\Tools\MSVC\1429~1.301\bin\Hostx64\x64\cl.exe @<<
- /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\TitanPlusPlus.dir\Memory.cpp.obj /FdCMakeFiles\TitanPlusPlus.dir\ /FS -c X:\Projects\TitanPlusPlus\Memory.cpp
-<<
-
-CMakeFiles\TitanPlusPlus.dir\Memory.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/TitanPlusPlus.dir/Memory.cpp.i"
-	C:\PROGRA~2\MICROS~3\2019\COMMUN~1\VC\Tools\MSVC\1429~1.301\bin\Hostx64\x64\cl.exe > CMakeFiles\TitanPlusPlus.dir\Memory.cpp.i @<<
- /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E X:\Projects\TitanPlusPlus\Memory.cpp
-<<
-
-CMakeFiles\TitanPlusPlus.dir\Memory.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/TitanPlusPlus.dir/Memory.cpp.s"
-	C:\PROGRA~2\MICROS~3\2019\COMMUN~1\VC\Tools\MSVC\1429~1.301\bin\Hostx64\x64\cl.exe @<<
- /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\TitanPlusPlus.dir\Memory.cpp.s /c X:\Projects\TitanPlusPlus\Memory.cpp
-<<
-
 CMakeFiles\TitanPlusPlus.dir\Value.cpp.obj: CMakeFiles\TitanPlusPlus.dir\flags.make
 CMakeFiles\TitanPlusPlus.dir\Value.cpp.obj: ..\Value.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/TitanPlusPlus.dir/Value.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/TitanPlusPlus.dir/Value.cpp.obj"
 	C:\PROGRA~2\MICROS~3\2019\COMMUN~1\VC\Tools\MSVC\1429~1.301\bin\Hostx64\x64\cl.exe @<<
  /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\TitanPlusPlus.dir\Value.cpp.obj /FdCMakeFiles\TitanPlusPlus.dir\ /FS -c X:\Projects\TitanPlusPlus\Value.cpp
 <<
@@ -152,7 +133,7 @@ CMakeFiles\TitanPlusPlus.dir\Value.cpp.s: cmake_force
 
 CMakeFiles\TitanPlusPlus.dir\VM.cpp.obj: CMakeFiles\TitanPlusPlus.dir\flags.make
 CMakeFiles\TitanPlusPlus.dir\VM.cpp.obj: ..\VM.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/TitanPlusPlus.dir/VM.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/TitanPlusPlus.dir/VM.cpp.obj"
 	C:\PROGRA~2\MICROS~3\2019\COMMUN~1\VC\Tools\MSVC\1429~1.301\bin\Hostx64\x64\cl.exe @<<
  /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\TitanPlusPlus.dir\VM.cpp.obj /FdCMakeFiles\TitanPlusPlus.dir\ /FS -c X:\Projects\TitanPlusPlus\VM.cpp
 <<
@@ -171,7 +152,7 @@ CMakeFiles\TitanPlusPlus.dir\VM.cpp.s: cmake_force
 
 CMakeFiles\TitanPlusPlus.dir\Compiler.cpp.obj: CMakeFiles\TitanPlusPlus.dir\flags.make
 CMakeFiles\TitanPlusPlus.dir\Compiler.cpp.obj: ..\Compiler.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/TitanPlusPlus.dir/Compiler.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/TitanPlusPlus.dir/Compiler.cpp.obj"
 	C:\PROGRA~2\MICROS~3\2019\COMMUN~1\VC\Tools\MSVC\1429~1.301\bin\Hostx64\x64\cl.exe @<<
  /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\TitanPlusPlus.dir\Compiler.cpp.obj /FdCMakeFiles\TitanPlusPlus.dir\ /FS -c X:\Projects\TitanPlusPlus\Compiler.cpp
 <<
@@ -190,7 +171,7 @@ CMakeFiles\TitanPlusPlus.dir\Compiler.cpp.s: cmake_force
 
 CMakeFiles\TitanPlusPlus.dir\Scanner.cpp.obj: CMakeFiles\TitanPlusPlus.dir\flags.make
 CMakeFiles\TitanPlusPlus.dir\Scanner.cpp.obj: ..\Scanner.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/TitanPlusPlus.dir/Scanner.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/TitanPlusPlus.dir/Scanner.cpp.obj"
 	C:\PROGRA~2\MICROS~3\2019\COMMUN~1\VC\Tools\MSVC\1429~1.301\bin\Hostx64\x64\cl.exe @<<
  /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\TitanPlusPlus.dir\Scanner.cpp.obj /FdCMakeFiles\TitanPlusPlus.dir\ /FS -c X:\Projects\TitanPlusPlus\Scanner.cpp
 <<
@@ -209,7 +190,7 @@ CMakeFiles\TitanPlusPlus.dir\Scanner.cpp.s: cmake_force
 
 CMakeFiles\TitanPlusPlus.dir\Token.cpp.obj: CMakeFiles\TitanPlusPlus.dir\flags.make
 CMakeFiles\TitanPlusPlus.dir\Token.cpp.obj: ..\Token.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/TitanPlusPlus.dir/Token.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/TitanPlusPlus.dir/Token.cpp.obj"
 	C:\PROGRA~2\MICROS~3\2019\COMMUN~1\VC\Tools\MSVC\1429~1.301\bin\Hostx64\x64\cl.exe @<<
  /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\TitanPlusPlus.dir\Token.cpp.obj /FdCMakeFiles\TitanPlusPlus.dir\ /FS -c X:\Projects\TitanPlusPlus\Token.cpp
 <<
@@ -228,7 +209,7 @@ CMakeFiles\TitanPlusPlus.dir\Token.cpp.s: cmake_force
 
 CMakeFiles\TitanPlusPlus.dir\Parser.cpp.obj: CMakeFiles\TitanPlusPlus.dir\flags.make
 CMakeFiles\TitanPlusPlus.dir\Parser.cpp.obj: ..\Parser.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/TitanPlusPlus.dir/Parser.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/TitanPlusPlus.dir/Parser.cpp.obj"
 	C:\PROGRA~2\MICROS~3\2019\COMMUN~1\VC\Tools\MSVC\1429~1.301\bin\Hostx64\x64\cl.exe @<<
  /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\TitanPlusPlus.dir\Parser.cpp.obj /FdCMakeFiles\TitanPlusPlus.dir\ /FS -c X:\Projects\TitanPlusPlus\Parser.cpp
 <<
@@ -247,7 +228,7 @@ CMakeFiles\TitanPlusPlus.dir\Parser.cpp.s: cmake_force
 
 CMakeFiles\TitanPlusPlus.dir\main.cpp.obj: CMakeFiles\TitanPlusPlus.dir\flags.make
 CMakeFiles\TitanPlusPlus.dir\main.cpp.obj: ..\main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/TitanPlusPlus.dir/main.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/TitanPlusPlus.dir/main.cpp.obj"
 	C:\PROGRA~2\MICROS~3\2019\COMMUN~1\VC\Tools\MSVC\1429~1.301\bin\Hostx64\x64\cl.exe @<<
  /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\TitanPlusPlus.dir\main.cpp.obj /FdCMakeFiles\TitanPlusPlus.dir\ /FS -c X:\Projects\TitanPlusPlus\main.cpp
 <<
@@ -266,7 +247,7 @@ CMakeFiles\TitanPlusPlus.dir\main.cpp.s: cmake_force
 
 CMakeFiles\TitanPlusPlus.dir\Local.cpp.obj: CMakeFiles\TitanPlusPlus.dir\flags.make
 CMakeFiles\TitanPlusPlus.dir\Local.cpp.obj: ..\Local.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/TitanPlusPlus.dir/Local.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/TitanPlusPlus.dir/Local.cpp.obj"
 	C:\PROGRA~2\MICROS~3\2019\COMMUN~1\VC\Tools\MSVC\1429~1.301\bin\Hostx64\x64\cl.exe @<<
  /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\TitanPlusPlus.dir\Local.cpp.obj /FdCMakeFiles\TitanPlusPlus.dir\ /FS -c X:\Projects\TitanPlusPlus\Local.cpp
 <<
@@ -288,7 +269,6 @@ TitanPlusPlus_OBJECTS = \
 "CMakeFiles\TitanPlusPlus.dir\Batch.cpp.obj" \
 "CMakeFiles\TitanPlusPlus.dir\Ops.cpp.obj" \
 "CMakeFiles\TitanPlusPlus.dir\Debug.cpp.obj" \
-"CMakeFiles\TitanPlusPlus.dir\Memory.cpp.obj" \
 "CMakeFiles\TitanPlusPlus.dir\Value.cpp.obj" \
 "CMakeFiles\TitanPlusPlus.dir\VM.cpp.obj" \
 "CMakeFiles\TitanPlusPlus.dir\Compiler.cpp.obj" \
@@ -304,7 +284,6 @@ TitanPlusPlus_EXTERNAL_OBJECTS =
 CMakeFiles\TitanPlusPlus.dir\cmake_device_link.obj: CMakeFiles\TitanPlusPlus.dir\Batch.cpp.obj
 CMakeFiles\TitanPlusPlus.dir\cmake_device_link.obj: CMakeFiles\TitanPlusPlus.dir\Ops.cpp.obj
 CMakeFiles\TitanPlusPlus.dir\cmake_device_link.obj: CMakeFiles\TitanPlusPlus.dir\Debug.cpp.obj
-CMakeFiles\TitanPlusPlus.dir\cmake_device_link.obj: CMakeFiles\TitanPlusPlus.dir\Memory.cpp.obj
 CMakeFiles\TitanPlusPlus.dir\cmake_device_link.obj: CMakeFiles\TitanPlusPlus.dir\Value.cpp.obj
 CMakeFiles\TitanPlusPlus.dir\cmake_device_link.obj: CMakeFiles\TitanPlusPlus.dir\VM.cpp.obj
 CMakeFiles\TitanPlusPlus.dir\cmake_device_link.obj: CMakeFiles\TitanPlusPlus.dir\Compiler.cpp.obj
@@ -315,7 +294,7 @@ CMakeFiles\TitanPlusPlus.dir\cmake_device_link.obj: CMakeFiles\TitanPlusPlus.dir
 CMakeFiles\TitanPlusPlus.dir\cmake_device_link.obj: CMakeFiles\TitanPlusPlus.dir\Local.cpp.obj
 CMakeFiles\TitanPlusPlus.dir\cmake_device_link.obj: CMakeFiles\TitanPlusPlus.dir\build.make
 CMakeFiles\TitanPlusPlus.dir\cmake_device_link.obj: TitanCUDA.lib
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Linking CUDA device code CMakeFiles\TitanPlusPlus.dir\cmake_device_link.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Linking CUDA device code CMakeFiles\TitanPlusPlus.dir\cmake_device_link.obj"
 	C:\PROGRA~1\NVIDIA~2\CUDA\v11.4\bin\nvcc.exe -forward-unknown-to-host-compiler  --generate-code=arch=compute_52,code=[compute_52,sm_52] -Xcompiler=-MDd -Wno-deprecated-gpu-targets -shared -dlink $(TitanPlusPlus_OBJECTS) $(TitanPlusPlus_EXTERNAL_OBJECTS) -o CMakeFiles\TitanPlusPlus.dir\cmake_device_link.obj   -LIBPATH:C:\PROGRA~1\NVIDIA~2\CUDA\v11.4\lib\x64  TitanCUDA.lib cudadevrt.lib cudart_static.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib  -Xcompiler=-FdX:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\CMakeFiles\TitanPlusPlus.dir\,-FS
 
 # Rule to build all files generated by this target.
@@ -327,7 +306,6 @@ TitanPlusPlus_OBJECTS = \
 "CMakeFiles\TitanPlusPlus.dir\Batch.cpp.obj" \
 "CMakeFiles\TitanPlusPlus.dir\Ops.cpp.obj" \
 "CMakeFiles\TitanPlusPlus.dir\Debug.cpp.obj" \
-"CMakeFiles\TitanPlusPlus.dir\Memory.cpp.obj" \
 "CMakeFiles\TitanPlusPlus.dir\Value.cpp.obj" \
 "CMakeFiles\TitanPlusPlus.dir\VM.cpp.obj" \
 "CMakeFiles\TitanPlusPlus.dir\Compiler.cpp.obj" \
@@ -343,7 +321,6 @@ TitanPlusPlus_EXTERNAL_OBJECTS =
 TitanPlusPlus.exe: CMakeFiles\TitanPlusPlus.dir\Batch.cpp.obj
 TitanPlusPlus.exe: CMakeFiles\TitanPlusPlus.dir\Ops.cpp.obj
 TitanPlusPlus.exe: CMakeFiles\TitanPlusPlus.dir\Debug.cpp.obj
-TitanPlusPlus.exe: CMakeFiles\TitanPlusPlus.dir\Memory.cpp.obj
 TitanPlusPlus.exe: CMakeFiles\TitanPlusPlus.dir\Value.cpp.obj
 TitanPlusPlus.exe: CMakeFiles\TitanPlusPlus.dir\VM.cpp.obj
 TitanPlusPlus.exe: CMakeFiles\TitanPlusPlus.dir\Compiler.cpp.obj
@@ -356,7 +333,7 @@ TitanPlusPlus.exe: CMakeFiles\TitanPlusPlus.dir\build.make
 TitanPlusPlus.exe: TitanCUDA.lib
 TitanPlusPlus.exe: CMakeFiles\TitanPlusPlus.dir\cmake_device_link.obj
 TitanPlusPlus.exe: CMakeFiles\TitanPlusPlus.dir\objects1.rsp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Linking CXX executable TitanPlusPlus.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Linking CXX executable TitanPlusPlus.exe"
 	"C:\Program Files\JetBrains\CLion 2020.1.1\bin\cmake\win\bin\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\TitanPlusPlus.dir --rc=C:\PROGRA~2\WI3CF2~1\10\bin\100190~1.0\x64\rc.exe --mt=C:\PROGRA~2\WI3CF2~1\10\bin\100190~1.0\x64\mt.exe --manifests -- C:\PROGRA~2\MICROS~3\2019\COMMUN~1\VC\Tools\MSVC\1429~1.301\bin\Hostx64\x64\link.exe /nologo @CMakeFiles\TitanPlusPlus.dir\objects1.rsp CMakeFiles\TitanPlusPlus.dir\cmake_device_link.obj @<<
  /out:TitanPlusPlus.exe /implib:TitanPlusPlus.lib /pdb:X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\TitanPlusPlus.pdb /version:0.0 /machine:x64 /debug /INCREMENTAL /subsystem:console   -LIBPATH:C:\PROGRA~1\NVIDIA~2\CUDA\v11.4\lib\x64  TitanCUDA.lib cudadevrt.lib cudart_static.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib 
 <<

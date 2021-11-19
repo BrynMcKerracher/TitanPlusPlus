@@ -17,7 +17,6 @@
 #include "Token.h"
 #include "Scanner.h"
 #include "Parser.h"
-#include "Memory.h"
 #include "Debug.h"
 #include "Local.h"
 
@@ -125,6 +124,20 @@ protected:
     Op::Code emitJump(Op::Code jumpOp);
 
     /**
+     * @brief Emits jump instructions necessary for a loop.
+     * @param jumpPosition The index of the beginning of the loop.
+     */
+    void emitLoop(Op::Code jumpPosition);
+
+    /**
+     * @brief Emits a pop instruction to pop the given muber of values from the stack.
+     * @param numPops The number of values to pop.
+     *
+     * Emits nothing for numPops == 0, a series of Op::Code::Pop for numPops <= 2, and a Op::PopN for numPops > 2.
+     */
+    void emitPop(size_t numPops);
+
+    /**
      * @brief Back-patches the destination of a jump operation into the bytecode.
      * @param offset The location of the jump instruction's first operand.
      */
@@ -196,6 +209,26 @@ protected:
      void ifStatement();
 
      /**
+      * @brief Parses a while statement.
+      */
+     void whileStatement();
+
+     /**
+      * @brief Parses a for statement.
+      */
+     void forStatement();
+
+     /**
+      * @brief Parses a logical 'and' statement.
+      */
+     void logicalAnd();
+
+     /**
+      * @brief Parses a logical 'or' statement.
+      */
+     void logicalOr();
+
+     /**
       * @brief Parses a variable declaration.
       */
      void variableDeclaration();
@@ -208,9 +241,10 @@ protected:
      /**
       * @brief Returns the index of a local variable with the given name, or -1 if not found.
       * @param name The token representing the name of the variable.
+      * @param foundVariable Set to true if the given local is found, otherwise false.
       * @return The index of the local variable in the locals array, or -1 if not found.
       */
-     std::size_t resolveLocalVariable(Token name);
+     std::size_t resolveLocalVariable(Token name, bool& foundVariable);
 
      /**
       * @brief Creates a sequence of instructions for loading a named variable.
@@ -247,7 +281,7 @@ protected:
      * @brief Registers a local variable name in the locals pool at the current scope-depth.
      * @param name The token containing the name to be registered.
      */
-    void addLocalVariable(Token name);
+    void addLocalVariable(Token& name);
 
     /**
      * @brief Declares a local variable, which occurs during compile-time.
@@ -283,6 +317,40 @@ protected:
      * @brief Decrements the scope depth counter.
      */
     void endScope();
+
+    /**
+     * @brief Writes the given address into the bytecode for this batch and determines the appropriate address op based
+     * on the size of the given address and address ops provided.
+     *
+     * @param addr16Op The operation to write if the address fits in a 16-bit word.
+     * @param addr32Op The operation to write if the address fits in a 32-bit word.
+     * @param addr64Op The operation to write if the address fits in a 64-bit word.
+     * @param addr The address to write into bytecode.
+     * @param errorMessage The error message to display if the address is out of bounds.
+     */
+    void writeAddress(Op::Code addr16Op, Op::Code addr32Op, Op::Code addr64Op, size_t addr, const std::string& errorMessage);
+
+    /**
+     * @brief Writes the first 16 bits of the given address into this batch's bytecode
+     */
+    void writeAddress16(size_t address);
+
+    /**
+     * @brief Writes the first 32 bits of the given address into this batch's bytecode
+     */
+    void writeAddress32(size_t address);
+
+    /**
+     * @brief Writes the entire 64-bit address into this batch's bytecode
+     */
+    void writeAddress64(size_t address);
+
+    /**
+     * @brief Writes a number of bits from the provided address into the bytestream equal to the number of bits in 8 * numOps.
+     * @param address The address to write to the bytestream.
+     * @param numOps The number of Op::Codes worth of bits to write to the stream.
+     */
+    void writeAddressX(size_t address, uint_fast8_t numOps);
 };
 
 #endif //TITANPLUSPLUS_COMPILER_H

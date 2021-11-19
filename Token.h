@@ -87,13 +87,6 @@ public:
      * @brief Default constructor.
      */
     Token() = default;
-
-    /**
-     * @brief Tests equality with another token.
-     * @param rhs The token to compare with.
-     * @return True if tokens represent the same substring in the source code, otherwise false.
-     */
-    bool operator==(const Token& rhs) const;
 };
 
 

@@ -19,7 +19,7 @@ int Debug::disassembleInstruction(const Batch &batch, size_t instructionIndex) {
 
     //Print piping if on the same line, otherwise print the line number
     if (instructionIndex > 0 && batch.lines[instructionIndex] == batch.lines[instructionIndex - 1]) {
-        std::cout << "| ";
+        std::cout << "|  ";
     }
     else {
         std::cout << batch.lines[instructionIndex] << " ";
@@ -31,14 +31,26 @@ int Debug::disassembleInstruction(const Batch &batch, size_t instructionIndex) {
 
     //OpCode-specific behaviour
     switch (instructionOpCode) {
-        case Op::Constant32: {
+       /* case Op::Constant64: {
             size_t constantIndex = Memory::toValue<size_t>(batch.opcodes[instructionIndex + 1], batch.opcodes[instructionIndex + 2]);
             std::cout << constantIndex << " " << batch.constantPool[constantIndex].toString();
             break;
-        }
+        } */
         case Op::Constant: {
             size_t constantIndex = batch.opcodes[instructionIndex + 1];
             std::cout << constantIndex << " " << batch.constantPool[constantIndex].toString();
+            break;
+        }
+        case Op::PopN: {
+            std::cout << "\t" << batch.opcodes[instructionIndex + 1];
+            break;
+        }
+        case Op::Jump: {
+            std::cout << "\t" << batch.opcodes[instructionIndex + 1] << "\t" << instructionIndex + batch.opcodes[instructionIndex + 1];
+            break;
+        }
+        case Op::JumpBack: {
+            std::cout << "\t" << batch.opcodes[instructionIndex + 1] << "\t" << instructionIndex - batch.opcodes[instructionIndex + 1];
             break;
         }
         default: break;

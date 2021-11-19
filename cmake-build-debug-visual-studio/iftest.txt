@@ -1,6 +1,34 @@
-var first = 11;
-var second = 12;
-if (first == second) {
-	print "Test!";
-	print "Test two!";
+var number = 11;
+var number2 = 11;
+var untruth = false;
+var truth = true;
+var i = 0;
+
+//This should evaluate to true
+if (untruth or truth) {
+	var test1 = 45;
+	if (test1 == 45) {
+		//All matrix operations are performed on the GPU!
+		var matrix = [[23, 4, 67] 3, 2, 1]];
+		var matrix2 = [[23, 23.4443, -82.3222333] 0, 0, 0]];
+		print matrix - matrix2;
+	}
+}
+else {
+	print "This should not print.";
+}
+
+//This should also evaluate to true
+if (number == number2) {
+	var string = "This is just a string";
+	var stringCopy = string;
+	print stringCopy;
+}
+
+//If this is true we have an issue
+if ((1 == 2 and 2 == 4) or 0 == 1) {
+	print "Oh no.";
+}
+else {
+	print "Math isn't broken, phew.";
 }

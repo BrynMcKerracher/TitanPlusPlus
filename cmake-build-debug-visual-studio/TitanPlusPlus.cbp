@@ -113,26 +113,14 @@
 					<DistClean command="nmake /NOLOGO /f X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\Makefile VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
-			<Target title="edit_cache">
-				<Option working_dir="X:/Projects/TitanPlusPlus/cmake-build-debug-visual-studio"/>
-				<Option type="4"/>
-				<MakeCommands>
-					<Build command="nmake /NOLOGO /f X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\Makefile VERBOSE=1 edit_cache"/>
-					<CompileFile command="nmake /NOLOGO /f X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\Makefile VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="nmake /NOLOGO /f X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\Makefile VERBOSE=1 clean"/>
-					<DistClean command="nmake /NOLOGO /f X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\Makefile VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="MatrixTest">
-				<Option output="X:/Projects/TitanPlusPlus/cmake-build-debug-visual-studio/MatrixTest.exe" prefix_auto="0" extension_auto="0"/>
+			<Target title="TitanEngine">
+				<Option output="X:/Projects/TitanPlusPlus/cmake-build-debug-visual-studio/TitanEngine.lib" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="X:/Projects/TitanPlusPlus/cmake-build-debug-visual-studio"/>
 				<Option object_output="./"/>
-				<Option type="1"/>
+				<Option type="2"/>
 				<Option compiler="msvc8"/>
 				<Compiler>
 					<Add directory="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.4/include"/>
-					<Add directory="X:/Projects/TitanPlusPlus/cmake-build-debug-visual-studio/_deps/googletest-src/googletest/include"/>
-					<Add directory="X:/Projects/TitanPlusPlus/cmake-build-debug-visual-studio/_deps/googletest-src/googletest"/>
 					<Add directory="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\ATLMFC\include"/>
 					<Add directory="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include"/>
 					<Add directory="C:\Program Files (x86)\Windows Kits\NETFXSDK\4.7.2\include\um"/>
@@ -143,22 +131,20 @@
 					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\cppwinrt"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="nmake /NOLOGO /f X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\Makefile VERBOSE=1 MatrixTest"/>
+					<Build command="nmake /NOLOGO /f X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\Makefile VERBOSE=1 TitanEngine"/>
 					<CompileFile command="nmake /NOLOGO /f X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\Makefile VERBOSE=1 &quot;$file&quot;"/>
 					<Clean command="nmake /NOLOGO /f X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\Makefile VERBOSE=1 clean"/>
 					<DistClean command="nmake /NOLOGO /f X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\Makefile VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
-			<Target title="MatrixTest/fast">
-				<Option output="X:/Projects/TitanPlusPlus/cmake-build-debug-visual-studio/MatrixTest.exe" prefix_auto="0" extension_auto="0"/>
+			<Target title="TitanEngine/fast">
+				<Option output="X:/Projects/TitanPlusPlus/cmake-build-debug-visual-studio/TitanEngine.lib" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="X:/Projects/TitanPlusPlus/cmake-build-debug-visual-studio"/>
 				<Option object_output="./"/>
-				<Option type="1"/>
+				<Option type="2"/>
 				<Option compiler="msvc8"/>
 				<Compiler>
 					<Add directory="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.4/include"/>
-					<Add directory="X:/Projects/TitanPlusPlus/cmake-build-debug-visual-studio/_deps/googletest-src/googletest/include"/>
-					<Add directory="X:/Projects/TitanPlusPlus/cmake-build-debug-visual-studio/_deps/googletest-src/googletest"/>
 					<Add directory="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\ATLMFC\include"/>
 					<Add directory="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include"/>
 					<Add directory="C:\Program Files (x86)\Windows Kits\NETFXSDK\4.7.2\include\um"/>
@@ -169,7 +155,7 @@
 					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\cppwinrt"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="nmake /NOLOGO /f X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\Makefile VERBOSE=1 MatrixTest/fast"/>
+					<Build command="nmake /NOLOGO /f X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\Makefile VERBOSE=1 TitanEngine/fast"/>
 					<CompileFile command="nmake /NOLOGO /f X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\Makefile VERBOSE=1 &quot;$file&quot;"/>
 					<Clean command="nmake /NOLOGO /f X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\Makefile VERBOSE=1 clean"/>
 					<DistClean command="nmake /NOLOGO /f X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\Makefile VERBOSE=1 clean"/>
@@ -223,6 +209,58 @@
 					<DistClean command="nmake /NOLOGO /f X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\Makefile VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
+			<Target title="TestSuite">
+				<Option output="X:/Projects/TitanPlusPlus/cmake-build-debug-visual-studio/TestSuite.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="X:/Projects/TitanPlusPlus/cmake-build-debug-visual-studio"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="msvc8"/>
+				<Compiler>
+					<Add directory="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.4/include"/>
+					<Add directory="X:/Projects/TitanPlusPlus/cmake-build-debug-visual-studio/_deps/googletest-src/googletest/include"/>
+					<Add directory="X:/Projects/TitanPlusPlus/cmake-build-debug-visual-studio/_deps/googletest-src/googletest"/>
+					<Add directory="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\ATLMFC\include"/>
+					<Add directory="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\NETFXSDK\4.7.2\include\um"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\ucrt"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\shared"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\um"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\winrt"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\cppwinrt"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="nmake /NOLOGO /f X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\Makefile VERBOSE=1 TestSuite"/>
+					<CompileFile command="nmake /NOLOGO /f X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\Makefile VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="nmake /NOLOGO /f X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\Makefile VERBOSE=1 clean"/>
+					<DistClean command="nmake /NOLOGO /f X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\Makefile VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="TestSuite/fast">
+				<Option output="X:/Projects/TitanPlusPlus/cmake-build-debug-visual-studio/TestSuite.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="X:/Projects/TitanPlusPlus/cmake-build-debug-visual-studio"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="msvc8"/>
+				<Compiler>
+					<Add directory="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.4/include"/>
+					<Add directory="X:/Projects/TitanPlusPlus/cmake-build-debug-visual-studio/_deps/googletest-src/googletest/include"/>
+					<Add directory="X:/Projects/TitanPlusPlus/cmake-build-debug-visual-studio/_deps/googletest-src/googletest"/>
+					<Add directory="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\ATLMFC\include"/>
+					<Add directory="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\NETFXSDK\4.7.2\include\um"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\ucrt"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\shared"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\um"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\winrt"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\cppwinrt"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="nmake /NOLOGO /f X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\Makefile VERBOSE=1 TestSuite/fast"/>
+					<CompileFile command="nmake /NOLOGO /f X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\Makefile VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="nmake /NOLOGO /f X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\Makefile VERBOSE=1 clean"/>
+					<DistClean command="nmake /NOLOGO /f X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\Makefile VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
 			<Target title="rebuild_cache">
 				<Option working_dir="X:/Projects/TitanPlusPlus/cmake-build-debug-visual-studio"/>
 				<Option type="4"/>
@@ -238,6 +276,16 @@
 				<Option type="4"/>
 				<MakeCommands>
 					<Build command="nmake /NOLOGO /f X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\Makefile VERBOSE=1 test"/>
+					<CompileFile command="nmake /NOLOGO /f X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\Makefile VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="nmake /NOLOGO /f X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\Makefile VERBOSE=1 clean"/>
+					<DistClean command="nmake /NOLOGO /f X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\Makefile VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="X:/Projects/TitanPlusPlus/cmake-build-debug-visual-studio"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="nmake /NOLOGO /f X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\Makefile VERBOSE=1 edit_cache"/>
 					<CompileFile command="nmake /NOLOGO /f X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\Makefile VERBOSE=1 &quot;$file&quot;"/>
 					<Clean command="nmake /NOLOGO /f X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\Makefile VERBOSE=1 clean"/>
 					<DistClean command="nmake /NOLOGO /f X:\Projects\TitanPlusPlus\cmake-build-debug-visual-studio\Makefile VERBOSE=1 clean"/>
@@ -494,15 +542,19 @@
 		</Build>
 		<Unit filename="X:/Projects/TitanPlusPlus/Batch.cpp">
 			<Option target="TitanPlusPlus"/>
+			<Option target="TitanEngine"/>
 		</Unit>
 		<Unit filename="X:/Projects/TitanPlusPlus/Batch.h">
 			<Option target="TitanPlusPlus"/>
+			<Option target="TitanEngine"/>
 		</Unit>
 		<Unit filename="X:/Projects/TitanPlusPlus/Compiler.cpp">
 			<Option target="TitanPlusPlus"/>
+			<Option target="TitanEngine"/>
 		</Unit>
 		<Unit filename="X:/Projects/TitanPlusPlus/Compiler.h">
 			<Option target="TitanPlusPlus"/>
+			<Option target="TitanEngine"/>
 		</Unit>
 		<Unit filename="X:/Projects/TitanPlusPlus/CudaMath.cu">
 			<Option target="TitanCUDA"/>
@@ -514,71 +566,81 @@
 		</Unit>
 		<Unit filename="X:/Projects/TitanPlusPlus/Debug.cpp">
 			<Option target="TitanPlusPlus"/>
+			<Option target="TitanEngine"/>
 		</Unit>
 		<Unit filename="X:/Projects/TitanPlusPlus/Debug.h">
 			<Option target="TitanPlusPlus"/>
+			<Option target="TitanEngine"/>
 		</Unit>
 		<Unit filename="X:/Projects/TitanPlusPlus/Local.cpp">
 			<Option target="TitanPlusPlus"/>
+			<Option target="TitanEngine"/>
 		</Unit>
 		<Unit filename="X:/Projects/TitanPlusPlus/Local.h">
 			<Option target="TitanPlusPlus"/>
+			<Option target="TitanEngine"/>
 		</Unit>
 		<Unit filename="X:/Projects/TitanPlusPlus/Matrix.h">
 			<Option target="TitanPlusPlus"/>
+			<Option target="TitanEngine"/>
 			<Option target="MatrixSpeed"/>
 		</Unit>
 		<Unit filename="X:/Projects/TitanPlusPlus/Matrix.tpp">
 			<Option target="TitanPlusPlus"/>
+			<Option target="TitanEngine"/>
 			<Option target="MatrixSpeed"/>
-		</Unit>
-		<Unit filename="X:/Projects/TitanPlusPlus/Memory.cpp">
-			<Option target="TitanPlusPlus"/>
-		</Unit>
-		<Unit filename="X:/Projects/TitanPlusPlus/Memory.h">
-			<Option target="TitanPlusPlus"/>
-		</Unit>
-		<Unit filename="X:/Projects/TitanPlusPlus/Memory.tpp">
-			<Option target="TitanPlusPlus"/>
 		</Unit>
 		<Unit filename="X:/Projects/TitanPlusPlus/Ops.cpp">
 			<Option target="TitanPlusPlus"/>
+			<Option target="TitanEngine"/>
 		</Unit>
 		<Unit filename="X:/Projects/TitanPlusPlus/Ops.h">
 			<Option target="TitanPlusPlus"/>
+			<Option target="TitanEngine"/>
 		</Unit>
 		<Unit filename="X:/Projects/TitanPlusPlus/Parser.cpp">
 			<Option target="TitanPlusPlus"/>
+			<Option target="TitanEngine"/>
 		</Unit>
 		<Unit filename="X:/Projects/TitanPlusPlus/Parser.h">
 			<Option target="TitanPlusPlus"/>
+			<Option target="TitanEngine"/>
 		</Unit>
 		<Unit filename="X:/Projects/TitanPlusPlus/Scanner.cpp">
 			<Option target="TitanPlusPlus"/>
+			<Option target="TitanEngine"/>
 		</Unit>
 		<Unit filename="X:/Projects/TitanPlusPlus/Scanner.h">
 			<Option target="TitanPlusPlus"/>
+			<Option target="TitanEngine"/>
 		</Unit>
 		<Unit filename="X:/Projects/TitanPlusPlus/Token.cpp">
 			<Option target="TitanPlusPlus"/>
+			<Option target="TitanEngine"/>
 		</Unit>
 		<Unit filename="X:/Projects/TitanPlusPlus/Token.h">
 			<Option target="TitanPlusPlus"/>
+			<Option target="TitanEngine"/>
 		</Unit>
 		<Unit filename="X:/Projects/TitanPlusPlus/VM.cpp">
 			<Option target="TitanPlusPlus"/>
+			<Option target="TitanEngine"/>
 		</Unit>
 		<Unit filename="X:/Projects/TitanPlusPlus/VM.h">
 			<Option target="TitanPlusPlus"/>
+			<Option target="TitanEngine"/>
 		</Unit>
 		<Unit filename="X:/Projects/TitanPlusPlus/Value.cpp">
 			<Option target="TitanPlusPlus"/>
+			<Option target="TitanEngine"/>
 		</Unit>
 		<Unit filename="X:/Projects/TitanPlusPlus/Value.h">
 			<Option target="TitanPlusPlus"/>
+			<Option target="TitanEngine"/>
 		</Unit>
 		<Unit filename="X:/Projects/TitanPlusPlus/Value.tpp">
 			<Option target="TitanPlusPlus"/>
+			<Option target="TitanEngine"/>
 		</Unit>
 		<Unit filename="X:/Projects/TitanPlusPlus/cmake-build-debug-visual-studio/_deps/googletest-src/googlemock/src/gmock-all.cc">
 			<Option target="gmock_main"/>
@@ -597,18 +659,25 @@
 		</Unit>
 		<Unit filename="X:/Projects/TitanPlusPlus/common.h">
 			<Option target="TitanPlusPlus"/>
+			<Option target="TitanEngine"/>
 		</Unit>
 		<Unit filename="X:/Projects/TitanPlusPlus/main.cpp">
 			<Option target="TitanPlusPlus"/>
 		</Unit>
 		<Unit filename="X:/Projects/TitanPlusPlus/testing/matrix/MatrixTesting.cpp">
-			<Option target="MatrixTest"/>
+			<Option target="TestSuite"/>
 		</Unit>
 		<Unit filename="X:/Projects/TitanPlusPlus/testing/matrix/MatrixTesting.h">
-			<Option target="MatrixTest"/>
+			<Option target="TestSuite"/>
 		</Unit>
 		<Unit filename="X:/Projects/TitanPlusPlus/testing/speed/main.cpp">
 			<Option target="MatrixSpeed"/>
+		</Unit>
+		<Unit filename="X:/Projects/TitanPlusPlus/testing/variable/VariableTest.cpp">
+			<Option target="TestSuite"/>
+		</Unit>
+		<Unit filename="X:/Projects/TitanPlusPlus/testing/variable/VariableTest.h">
+			<Option target="TestSuite"/>
 		</Unit>
 		<Unit filename="X:/Projects/TitanPlusPlus/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>

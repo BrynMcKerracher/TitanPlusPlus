@@ -10,16 +10,14 @@
 
 #include <unordered_set>
 #include <iostream>
-#include <memory>
 #include "Batch.h"
 #include "Ops.h"
-#include "Memory.h"
 #include "Debug.h"
 #include "Compiler.h"
 #include "Value.h"
 
 //Enable verbose tracing of bytecode execution
-#define DEBUG_TRACE_EXECUTION
+//#define DEBUG_TRACE_EXECUTION
 
 /**
  * The meat of Titan.
@@ -39,7 +37,7 @@ public:
     };
 
     /**
-     * Reserves stack space for the VM using MaxStackSize.
+     * Reserves stack space for the VM using InitialStackReserveSize.
      */
     VM();
 
@@ -54,8 +52,7 @@ public:
 protected:
     Op::Code* pc = nullptr;                         ///< Program counter.
     std::vector<Value> stack;                       ///< The VM's value stack.
-    const size_t MaxStackSize = 4096;               ///< The maximum size of the value stack before stack overflow.
-    std::unordered_set<std::string> strings;        ///< Interned hashmap of all defined strings.
+    const size_t InitialStackReserveSize = 4096;    ///< The maximum size of the value stack before stack overflow.
     std::unordered_map<std::string, Value> globals; ///< Hashmap of all global variables by name.
 
     /**
@@ -103,14 +100,48 @@ protected:
      * @param value The value to be tested for falsiness.
      * @return True if the value evaluates to false, otherwise false.
      */
-    static bool isFalsey(const Value& value);
+    bool isFalsey(const Value& value);
 
     /**
      * @brief Checks if the backmost two values on the stack have the provided type.
      * @param type The type we expect the top two values on the stack to have.
      * @return True if the backmost two values have the provided type, otherwise false.
      */
-    bool checkBinaryOperandsHaveType(Value::Type type) const;
+    bool doBinaryOperandsHaveType(Value::Type type) const;
+
+    /**
+     * @brief Reads 16 bits from the bytestream and return it.
+     * @return The next 16 bits in the bytestream as a 16-bit unsigned int.
+     */
+    uint16_t read16();
+
+    /**
+     * @brief Reads 32 bits from the bytestream and return it.
+     * @return The next 32 bits in the bytestream as a 32-bit unsigned int.
+     */
+    uint32_t read32();
+
+    /**
+     * @brief Reads 64 bits from the bytestream and return it.
+     * @return The next 64 bits in the bytestream as a 64-bit unsigned int.
+     */
+    uint64_t read64();
+
+
+    /**
+     * @brief Moves the program counter forward 16 bits, taking sizeof(Op::Code) into account.
+     */
+    void move16();
+
+    /**
+     * @brief Moves the program counter forward 64 bits, taking sizeof(Op::Code) into account.
+     */
+    void move32();
+
+    /**
+     * @brief Moves the program counter forward 64 bits, taking sizeof(Op::Code) into account.
+     */
+    void move64();
 };
 
 #endif //TITANPLUSPLUS_VM_H
